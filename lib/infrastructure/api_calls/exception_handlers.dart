@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 class ExceptionHandlers {
   getExceptionString(error) {
     if (error is SocketException) {
@@ -23,6 +25,7 @@ class ExceptionHandlers {
     } else if (error is FetchDataException) {
       return error.message.toString();
     } else {
+      print(error.toString());
       return 'Unknown error occured';
     }
   }

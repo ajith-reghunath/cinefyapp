@@ -3,30 +3,37 @@ import 'dart:convert';
 import 'package:cinefy/core/constants.dart';
 import 'package:cinefy/presentation/sign_up/Enter%20Name/enter_name_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/sign_up_bloc/sign_up_bloc.dart';
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
-import '../../common widgets/common_widgets.dart'; 
+import '../../common widgets/common_widgets.dart';
 
 Widget otpVerificationForm(double width) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Column(
-      children: [
-        mainIcons(width, 'assets/images/4.png'),
-        titleText('OTP Code Verification'),
-        sizedBox3(),
-        description(),
-        sizedBox3(),
-        _otpVerifyField(),
-        sizedBox5(),
-        divider(),
-        sizedBoxH50(),
-        _verifyOtpButton(width)
-      ],
-    ),
+  return BlocBuilder<SignUpBloc, SignUpState>(
+    builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 27),
+        child: Column(
+          children: [
+            mainIcons(width, 'assets/images/4.png'),
+            titleText('OTP Code Verification'),
+            sizedBox3(),
+            description(),
+            sizedBox3(),
+            _otpVerifyField(),
+            sizedBox3(),
+            otpNumberValidation(),
+            sizedBoxH20(),
+            divider(),
+            sizedBoxH50(),
+            _verifyOtpButton(width)
+          ],
+        ),
+      );
+    },
   );
 }
 
@@ -44,32 +51,156 @@ Widget _otpNumberField() {
 }
 
 Widget _otpVerifyField() {
+  String number = '';
   return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-              color: shade5, borderRadius: BorderRadius.circular(7)),
-          child: TextFormField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              prefixIcon: const Icon(Icons.lock),
-              prefixIconColor: state.otpEntered.isNotEmpty ? shade2 : shade3,
-              focusColor: shade1,
-              hintText: 'Enter OTP',
+    return Form(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: shade4),
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xffEEEEEE)),
+            height: 68,
+            width: 64,
+            child: Center(
+              child: TextFormField(
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                    number = number + value;
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(fontSize: fontSize4),
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
             ),
-            onChanged: (value) =>
-                context.read<SignUpBloc>().add(OtpAdded(otp: value)),
           ),
-        ),
-        otpNumberValidation()
-      ],
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: shade4),
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xffEEEEEE)),
+            height: 68,
+            width: 64,
+            child: Center(
+              child: TextFormField(
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                  number = number + value;
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(fontSize: fontSize4),
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: shade4),
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xffEEEEEE)),
+            height: 68,
+            width: 64,
+            child: Center(
+              child: TextFormField(
+                onChanged: (value) {
+                  if (value.length == 1) {
+                    FocusScope.of(context).nextFocus();
+                  } else {
+                    FocusScope.of(context).previousFocus();
+                  }
+                  number = number + value;
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(fontSize: fontSize4),
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: shade4),
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xffEEEEEE)),
+            height: 68,
+            width: 64,
+            child: Center(
+              child: TextFormField(
+                onChanged: (value) {
+                  if (value.length != 1) {
+                    FocusScope.of(context).previousFocus();
+                  }
+                  context.read<SignUpBloc>().add(OtpAdded(otp: number + value));
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                style: const TextStyle(fontSize: fontSize4),
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
+    // Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     Container(
+    //       height: 50,
+    //       decoration: BoxDecoration(
+    //           color: shade5, borderRadius: BorderRadius.circular(7)),
+    //       child: TextFormField(
+    //         keyboardType: TextInputType.number,
+    //         decoration: InputDecoration(
+    //           border: InputBorder.none,
+    //           enabledBorder: InputBorder.none,
+    //           focusedBorder: InputBorder.none,
+    //           prefixIcon: const Icon(Icons.lock),
+    //           prefixIconColor: state.otpEntered.isNotEmpty ? shade2 : shade3,
+    //           focusColor: shade1,
+    //           hintText: 'Enter OTP',
+    //         ),
+    //         onChanged: (value) =>
+    //             context.read<SignUpBloc>().add(OtpAdded(otp: value)),
+    //       ),
+    //     ),
+    //     otpNumberValidation()
+    //   ],
+    // );
   });
 }
 
@@ -84,24 +215,20 @@ Widget _verifyOtpButton(double width) {
           backgroundColor: const MaterialStatePropertyAll(shade1)),
       onPressed: () {
         displayOtpNumberValidation = true;
-        // print('kkkkkkk');
-        // print(signUpState.otpResponse!.body.toString());
-        context.read<SignUpBloc>().add(VerifyotpButtonClickedInitial());
-        var data = jsonDecode(signUpState.otpResponse!.body.toString());
-        // print(data['code']);
-        // print(signUpState.otpEntered);
-        if (data['code'].toString() == signUpState.otpEntered.toString()) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) {
-              return (EnterNameScreen());
-            }),
-          );
-        } else {
-          showSnackBar(context, 'Incorrect OTP');
-          print(data['message']);
-          print(signUpState.otpEntered);
-        }
+          context.read<SignUpBloc>().add(VerifyotpButtonClickedInitial());
+          var data = jsonDecode(signUpState.otpResponse!.body.toString());
+          if (data['code'].toString() == signUpState.otpEntered.toString()) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) {
+                return (EnterNameScreen());
+              }),
+            );
+          } else {
+            showSnackBar(context, 'Incorrect OTP');
+            print(data['message']);
+            print(signUpState.otpEntered);
+          }
 
         //IGNORE
 

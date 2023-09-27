@@ -8,8 +8,10 @@ import 'package:cinefy/presentation/login/login_screen.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 
 import '../../application/bloc_user/user_bloc.dart';
+import '../../domain/time_ago/custom_messages.dart';
 import '../../infrastructure/Functions/current_user_functions.dart'
     as userFunctions;
 import '../main_page/cd_mainpage.dart';
@@ -17,9 +19,10 @@ import '../main_page/screen_main_page.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
+  
   void startTimer(BuildContext context) async {
     bool isEmpty = await userFunctions.isUserDataEmpty();
+    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
     bool isRecruiter = false;
     if (isEmpty == false) {
       isRecruiter = await isCastingDirector();
@@ -57,9 +60,6 @@ class SplashScreen extends StatelessWidget {
           builder: (context, state) {
             print('xxxx');
             context.read<UserBloc>().add(LoadUserMethod2());
-            context.read<CastingCallBloc>().add(LoadCastingCall());
-            context.read<CastingCallBloc>().add(AppliedCastingCalls());
-            // context.read<CastingCallBloc>().add(LoadCreatedCastingCall());
             return Scaffold(
               backgroundColor: secondaryColor,
               body: Center(

@@ -55,7 +55,6 @@ class BaseClient {
   }
 
   Future<dynamic> createCcApi({
-    String? urlEndPoint,
     PlatformFile? pickFile,
     String? title,
     String? subTitle,
@@ -68,9 +67,11 @@ class BaseClient {
     String? location,
     String? description,
     List<String>? languages,
+    String? userId,
   }) async {
     // final url = 'http://10.0.2.2:5000/api/$urlEndPoint';
-    final url = apiBase + urlEndPoint!;
+    const urlEndPoint = '/createPost';
+    final url = apiBase + urlEndPoint;
     var uri = Uri.parse(url);
     final request = http.MultipartRequest('POST', uri);
 
@@ -83,7 +84,7 @@ class BaseClient {
     request.fields['title'] = title!;
     request.fields['subtitle'] = subTitle!;
     request.fields['shortdescription'] = shortDescription!;
-    request.fields['author'] = '64be578400ae57be46dfbf86';
+    request.fields['author'] = userId!;
     print('xxxxx - 2');
     request.fields['projectType'] = projectType!;
     request.fields['director'] = director!;

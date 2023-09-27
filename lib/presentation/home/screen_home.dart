@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/bloc_user/user_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
 import '../../core/constants.dart';
+import '../../domain/time_ago/time_display.dart';
 import '../common widgets/casting call card/castingCallCard.dart';
 
 // ignore: must_be_immutable
@@ -57,7 +58,10 @@ class ScreenHome extends StatelessWidget {
                         replacement: SizedBox(
                           width: width,
                           height: height,
-                          child: const Center(child: CircularProgressIndicator(color: accentColor,)),
+                          child: const Center(
+                              child: CircularProgressIndicator(
+                            color: accentColor,
+                          )),
                         ),
                         child: CustomScrollView(
                           slivers: [
@@ -127,7 +131,10 @@ class ScreenHome extends StatelessWidget {
                             ),
                             SliverList(
                                 delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
+                              (BuildContext context, int num) {
+                                int index =
+                                    castingCallstate.castingCallList!.length -
+                                        (num + 1);
                                 return Visibility(
                                   visible:
                                       castingCallstate.castingCallList != null,
@@ -178,7 +185,11 @@ class ScreenHome extends StatelessWidget {
                                                 .toString(),
                                         isBookmarked: userState.bookmark!
                                             .contains(castingCallstate
-                                                .castingCallList![index].sId)),
+                                                .castingCallList![index].sId),
+                                        time: TimeDisplay().getTime(
+                                            castingCallstate
+                                                .castingCallList![index]
+                                                .createdAt!)),
                                   ),
                                 );
                               },

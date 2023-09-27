@@ -1,4 +1,4 @@
-import 'package:cinefy/presentation/cd_interface/cd_interface.dart';
+import 'package:cinefy/presentation/home/widgets/cd_not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/bloc_user/user_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
 import '../../core/constants.dart';
+import '../../domain/time_ago/time_display.dart';
 import '../common widgets/casting call card/castingCallCard.dart';
 
 // ignore: must_be_immutable
@@ -46,259 +47,172 @@ class ScreenCdHome extends StatelessWidget {
                     final height = MediaQuery.of(context).size.height;
 
                     refresh() async {
-                      context.read<CastingCallBloc>().add(LoadCastingCall());
+                      context
+                          .read<CastingCallBloc>()
+                          .add(LoadCreatedCastingCall());
                     }
 
                     return RefreshIndicator(
                       color: accentColor,
                       onRefresh: refresh,
-                      child: Visibility(
-                        visible: userState.email != null,
-                        replacement: SizedBox(
-                          width: width,
-                          height: height,
-                          child: const Center(
-                              child: CircularProgressIndicator(
-                            color: accentColor,
-                          )),
-                        ),
-                        child: CustomScrollView(
-                          slivers: [
-                            SliverAppBar(
-                              pinned: false,
-                              snap: false,
-                              collapsedHeight: 85,
-                              floating: true,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            pinned: false,
+                            snap: false,
+                            collapsedHeight: 85,
+                            floating: true,
 
-                              // bottom: AppBar(title: Text('cinefy',style: TextStyle(color: Colors.white),),centerTitle: true,),
-                              backgroundColor: secondaryColor,
-                              flexibleSpace: FlexibleSpaceBar(
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          options(context);
-                                        },
-                                        icon: const Icon(
-                                          Icons.menu,
-                                          size: 30,
-                                          color: shade4,
-                                        )),
-                                    Container(
-                                      width: 100,
-                                      height: 40,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/cinefy logo.png'),
-                                            fit: BoxFit.cover,
-                                            scale: 2.0),
-                                      ),
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                              return ScreenSearch();
-                                            }),
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.search,
-                                          size: 30,
-                                          color: shade4,
-                                        )),
-                                  ],
-                                ),
-                                centerTitle: true,
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            // bottom: AppBar(title: Text('cinefy',style: TextStyle(color: Colors.white),),centerTitle: true,),
+                            backgroundColor: secondaryColor,
+                            flexibleSpace: FlexibleSpaceBar(
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  sizedBoxH20(),
-                                  topSection(userState.name ?? 'artist', width),
+                                  IconButton(
+                                      onPressed: () {
+                                        options(context);
+                                      },
+                                      icon: const Icon(
+                                        Icons.menu,
+                                        size: 30,
+                                        color: shade4,
+                                      )),
+                                  Container(
+                                    width: 100,
+                                    height: 40,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/cinefy logo.png'),
+                                          fit: BoxFit.cover,
+                                          scale: 2.0),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                            return const ScreenSearch();
+                                          }),
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.search,
+                                        size: 30,
+                                        color: shade4,
+                                      )),
                                 ],
                               ),
+                              centerTitle: true,
                             ),
-                            SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Visibility(
-                                    visible: castingCallstate.castingCallList !=
-                                        null,
-                                    replacement: SizedBox(
-                                      height: 200,
+                          ),
+                          SliverToBoxAdapter(
+                              child: castingCallstate
+                                      .createdCastingCallList!.isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        sizedBoxH20(),
+                                        topSection(
+                                            userState.name ?? 'artist', width)
+                                      ],
+                                    )
+                                  : CdNotFoundScreen(
+                                      height: height,
                                       width: width,
-                                      child: const CircularProgressIndicator(),
-                                    ),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          context.read<CastingCallBloc>().add(
-                                              AddToSortedList(
-                                                  applicants: castingCallstate
-                                                      .castingCallList![index]
-                                                      .applicants));
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                              return CastingDirectorInterface(
-                                                  index: index);
-                                              // ScreenCastingCall(
-                                              //   index: index,
-                                              //   isBookmarked: userState.bookmark!
-                                              //       .contains(castingCallstate
-                                              //           .castingCallList![index]
-                                              //           .sId),
-                                              // );
-                                            }),
-                                          );
-                                        },
-                                        child: cdHomeCastingcallCard(
-                                          context: context,
-                                          title: castingCallstate
-                                              .castingCallList![index].title,
-                                          roles: castingCallstate
-                                              .castingCallList![index].roles,
-                                          type: castingCallstate
-                                              .castingCallList![index]
-                                              .projectType,
-                                          imageUrl:
-                                              'https://app.nex-gen.shop/${castingCallstate.castingCallList![index].image}',
-                                          language: castingCallstate
-                                                  .castingCallList![index]
-                                                  .language!
-                                                  .isEmpty
-                                              ? 'not given'
-                                              : castingCallstate
-                                                  .castingCallList![index]
-                                                  .language![0]
-                                                  .toString(),
-                                          count: castingCallstate
-                                                  .castingCallList![index].applicants!.length
-                                        )
-                                        //   castingcallCard(
-                                        //       context: context,
-                                        //       title: castingCallstate
-                                        //           .castingCallList![index].title,
-                                        //       roles: castingCallstate
-                                        //           .castingCallList![index].roles,
-                                        //       author: castingCallstate
-                                        //           .castingCallList![index]
-                                        //           .author!
-                                        //           .name,
-                                        //       type: castingCallstate
-                                        //           .castingCallList![index]
-                                        //           .projectType,
-                                        //       imageUrl:
-                                        //           'https://app.nex-gen.shop/${castingCallstate.castingCallList![index].image}',
-                                        //       language: castingCallstate
-                                        //               .castingCallList![index]
-                                        //               .language!
-                                        //               .isEmpty
-                                        //           ? 'not given'
-                                        //           : castingCallstate
-                                        //               .castingCallList![index]
-                                        //               .language![0]
-                                        //               .toString(),
-                                        //       isBookmarked: userState.bookmark!
-                                        //           .contains(castingCallstate
-                                        //               .castingCallList![index].sId)),
-                                        // ),
-                                        ));
-                              },
-                              childCount:
-                                  castingCallstate.castingCallList!.length,
-                            ))
-                          ],
-                        ),
+                                      name: userState.name,
+                                    )),
+                          SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int num) {
+                              int index = castingCallstate
+                                      .createdCastingCallList!.length -
+                                  (num + 1);
+                              return GestureDetector(
+                                  onTap: () {
+                                    // context.read<CastingCallBloc>().add(
+                                    //     AddToSortedList(
+                                    //         applicants: castingCallstate
+                                    //             .createdCastingCallList![index]
+                                    //             .applicants));
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder:
+                                    //       (BuildContext context) {
+                                    //     return CastingDirectorInterface(
+                                    //         index: index);
+                                    //   }),
+                                    // );
+                                  },
+                                  child: cdHomeCastingcallCard(
+                                      context: context,
+                                      title: castingCallstate
+                                          .createdCastingCallList![index].title,
+                                      roles: castingCallstate
+                                          .createdCastingCallList![index].roles,
+                                      type: castingCallstate
+                                          .createdCastingCallList![index]
+                                          .projectType,
+                                      imageUrl:
+                                          'https://app.nex-gen.shop/${castingCallstate.createdCastingCallList![index].image}',
+                                      language: castingCallstate
+                                              .createdCastingCallList![index]
+                                              .language!
+                                              .isEmpty
+                                          ? 'not given'
+                                          : castingCallstate
+                                              .createdCastingCallList![index]
+                                              .language![0]
+                                              .toString(),
+                                      count: castingCallstate
+                                          .createdCastingCallList![index]
+                                          .applicants!
+                                          .length,
+                                      time: TimeDisplay().getTime(
+                                          castingCallstate
+                                              .createdCastingCallList![index]
+                                              .createdAt!))
+                                  //   castingcallCard(
+                                  //       context: context,
+                                  //       title: castingCallstate
+                                  //           .castingCallList![index].title,
+                                  //       roles: castingCallstate
+                                  //           .castingCallList![index].roles,
+                                  //       author: castingCallstate
+                                  //           .castingCallList![index]
+                                  //           .author!
+                                  //           .name,
+                                  //       type: castingCallstate
+                                  //           .castingCallList![index]
+                                  //           .projectType,
+                                  //       imageUrl:
+                                  //           'https://app.nex-gen.shop/${castingCallstate.castingCallList![index].image}',
+                                  //       language: castingCallstate
+                                  //               .castingCallList![index]
+                                  //               .language!
+                                  //               .isEmpty
+                                  //           ? 'not given'
+                                  //           : castingCallstate
+                                  //               .castingCallList![index]
+                                  //               .language![0]
+                                  //               .toString(),
+                                  //       isBookmarked: userState.bookmark!
+                                  //           .contains(castingCallstate
+                                  //               .castingCallList![index].sId)),
+                                  // ),
+                                  );
+                            },
+                            childCount:
+                                castingCallstate.createdCastingCallList!.length,
+                          ))
+                        ],
                       ),
                     );
-                    // Column(
-                    //   children: [
-                    //     Container(decoration: const BoxDecoration(color: secondaryColor),width: width,height: 60,),
-                    //     TextButton(
-                    //         onPressed: () async {
-                    //           List<CurrentUserModel> userdetails =
-                    //               await getAllUsers();
-                    //           // print(userdetails[0].id);
-                    //           print(userState.sId);
-                    //         },
-                    //         child: const Text('Press me')),
-                    //     ElevatedButton(
-                    //         onPressed: () async {
-                    //           context.read<LoginBloc>().add(LogOut());
-                    //           Navigator.pushReplacement(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //                 builder: (BuildContext context) {
-                    //               return (LoginScreen());
-                    //             }),
-                    //           );
-                    //           await clearUserData();
-                    //         },
-                    //         child: const Text('log out')),
-                    //     Visibility(
-                    //       visible: castingCallstate.castingCallList != null,
-                    //       replacement: const Center(
-                    //         child: CircularProgressIndicator(),
-                    //       ),
-                    //       child: Expanded(
-                    //         child: ListView.builder(
-
-                    //             itemCount:
-                    //                 castingCallstate.castingCallList!.length,
-                    //             itemBuilder: (_, int index) {
-                    //               return GestureDetector(
-                    //                 onTap: () {
-                    //                   Navigator.push(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                         builder: (BuildContext context) {
-                    //                       return ScreenCastingCall(
-                    //                           index: index);
-                    //                     }),
-                    //                   );
-                    //                 },
-                    //                 child: castingcallCard(
-                    //                     context: context,
-                    //                     title: castingCallstate
-                    //                         .castingCallList![index].title,
-                    //                     roles: castingCallstate
-                    //                         .castingCallList![index].roles,
-                    //                     author: castingCallstate
-                    //                         .castingCallList![index]
-                    //                         .author!
-                    //                         .name,
-                    //                     type: castingCallstate
-                    //                         .castingCallList![index]
-                    //                         .projectType,
-                    //                     imageUrl:
-                    //                         'https://app.nex-gen.shop/${castingCallstate.castingCallList![index].image}',
-                    //                     language: castingCallstate
-                    //                             .castingCallList![index]
-                    //                             .language!
-                    //                             .isEmpty
-                    //                         ? 'not given'
-                    //                         : castingCallstate
-                    //                             .castingCallList![index]
-                    //                             .language![0]
-                    //                             .toString()),
-                    //               );
-                    //             }
-                    //             ),
-                    //       ),
-                    //     )
-                    //   ],
-                    // );
-
-                    //stop
                   },
                 );
               },

@@ -6,20 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/colors.dart';
 import '../../domain/casting_call/casting_call_model.dart';
 import '../castingcall/screen_casting_call.dart';
 
+// ignore: must_be_immutable
 class ScreenApplied extends StatelessWidget {
-  const ScreenApplied({super.key});
-
+  ScreenApplied({super.key});
+  int call = 1;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocBuilder<CastingCallBloc, CastingCallState>(
         builder: (context, state) {
+          if (call == 1) {
+            context.read<CastingCallBloc>().add(AppliedCastingCalls());
+            call = 0;
+          }
           return BlocBuilder<UserBloc, UserState>(
             builder: (context, userState) {
               final width = MediaQuery.of(context).size.width;
+              final height = MediaQuery.of(context).size.height;
               List<CastingCallModel> appliedCastingCallList =
                   state.appliedCastingCallList;
               return Padding(
@@ -48,46 +55,60 @@ class ScreenApplied extends StatelessWidget {
                     //           .add(AppliedCastingCalls());
                     //     },
                     //     child: Text('load')),
-                    Expanded(
-                      child: ListView.builder(
-                        itemBuilder: (BuildContext context, int index) {
-                          bool isBookmarked = userState.bookmark!
-                              .contains(appliedCastingCallList[index].sId);
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return ScreenCastingCall(
-                                    index: appliedCastingCallList[index].index!,
-                                    isBookmarked: isBookmarked,
-                                  );
-                                }),
-                              );
-                            },
-                            child: appliedCastingcallCard(
-                                context: context,
-                                title: appliedCastingCallList[index].title,
-                                roles: appliedCastingCallList[index].roles,
-                                author:
-                                    appliedCastingCallList[index].author!.name,
-                                type: appliedCastingCallList[index].projectType,
-                                imageUrl:
-                                    'https://app.nex-gen.shop/${appliedCastingCallList[index].image}',
-                                language: appliedCastingCallList[index]
-                                        .language!
-                                        .isEmpty
-                                    ? 'not given'
-                                    : appliedCastingCallList[index]
-                                        .language![0]
-                                        .toString(),
-                                isBookmarked: isBookmarked,
-                                castingStatus: appliedCastingCallList[index]
-                                    .castingCallStatus),
-                          );
-                        },
-                        itemCount: state.appliedCastingCallList.length,
+                    Visibility(
+                      visible: state.appliedCastingCallList.isNotEmpty,
+                      replacement: SizedBox(
+                        height: 0.7 * height,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: accentColor,
+                          ),
+                        ),
+                      ),
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (BuildContext context, int index) {
+                            bool isBookmarked = userState.bookmark!
+                                .contains(appliedCastingCallList[index].sId);
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return ScreenCastingCall(
+                                      index:
+                                          appliedCastingCallList[index].index!,
+                                      isBookmarked: isBookmarked,
+                                    );
+                                  }),
+                                );
+                              },
+                              child: appliedCastingcallCard(
+                                  context: context,
+                                  title: appliedCastingCallList[index].title,
+                                  roles: appliedCastingCallList[index].roles,
+                                  author: appliedCastingCallList[index]
+                                      .author!
+                                      .name,
+                                  type:
+                                      appliedCastingCallList[index].projectType,
+                                  imageUrl:
+                                      'https://app.nex-gen.shop/${appliedCastingCallList[index].image}',
+                                  language: appliedCastingCallList[index]
+                                          .language!
+                                          .isEmpty
+                                      ? 'not given'
+                                      : appliedCastingCallList[index]
+                                          .language![0]
+                                          .toString(),
+                                  isBookmarked: isBookmarked,
+                                  castingStatus: appliedCastingCallList[index]
+                                      .castingCallStatus),
+                            );
+                          },
+                          itemCount: state.appliedCastingCallList.length,
+                        ),
                       ),
                     )
                   ],

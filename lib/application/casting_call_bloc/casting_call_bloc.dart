@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:cinefy/domain/created_casting_call/created_casting_call_model.dart';
 import 'dart:convert';
 
+
 import '../../core/constants.dart';
-import '../../domain/casting_call/casting_call_model.dart';
+import '../../domain/casting_call/casting_call_model.dart'as ccm;
 import 'package:http/http.dart' as http;
 
 import '../../infrastructure/Functions/current_user_functions.dart';
@@ -20,8 +22,8 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           unreviewedApplicants: [],
         )) {
     on<LoadCastingCall>((event, emit) async {
-      CastingCallModel castingCallModel = CastingCallModel();
-      List<CastingCallModel> castingCallList =
+      ccm.CastingCallModel castingCallModel = ccm.CastingCallModel();
+      List<ccm.CastingCallModel> castingCallList =
           await getCastingCalls(castingCallModel);
       emit(CastingCallState(
           castingCallList: castingCallList,
@@ -35,8 +37,8 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
     on<ApplyCastingCall>((event, emit) async {
       List<CurrentUserModel> userdetails = await getAllUsers();
       await applyCastingCall(userdetails[0].id!, event.postID);
-      CastingCallModel castingCallModel = CastingCallModel();
-      List<CastingCallModel> castingCallList =
+      ccm.CastingCallModel castingCallModel = ccm.CastingCallModel();
+      List<ccm.CastingCallModel> castingCallList =
           await getCastingCalls(castingCallModel);
       emit(CastingCallState(
           castingCallList: castingCallList,
@@ -53,7 +55,7 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
       if (userdetails.isNotEmpty) {
         String userID = userdetails[0].id!;
         if (state.castingCallList != null) {
-          List<CastingCallModel>? castingCallList = state.castingCallList;
+          List<ccm.CastingCallModel>? castingCallList = state.castingCallList;
           int k = 0;
           for (int i = 0; i < castingCallList!.length; i++) {
             if (castingCallList[i].applicants!.isNotEmpty) {
@@ -69,6 +71,13 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
               }
             }
           }
+          emit(CastingCallState(
+              castingCallList: state.castingCallList,
+              appliedCastingCallList: state.appliedCastingCallList,
+              rejectedApplicants: state.rejectedApplicants,
+              selectedApplicants: state.selectedApplicants,
+              unreviewedApplicants: state.unreviewedApplicants,
+              createdCastingCallList: state.createdCastingCallList));
           print(k);
           print(state.appliedCastingCallList.length);
         }
@@ -76,7 +85,7 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
     });
 
     on<SearchCastingCall>((event, emit) async {
-      List<CastingCallModel> searchedCastingCallList =
+      List<ccm.CastingCallModel> searchedCastingCallList =
           await searchCall(event.text);
       emit(CastingCallState(
           castingCallList: state.castingCallList,
@@ -88,27 +97,27 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           createdCastingCallList: state.createdCastingCallList));
     });
 
-    on<AddToSortedList>((event, emit) {
-      if (event.applicants != null) {
-        for (int i = 0; i < event.applicants!.length; i++) {
-          if (event.applicants![i].status == 'unreviewed') {
-            state.unreviewedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'selected') {
-            state.selectedApplicants.add(event.applicants![i]);
-          } else {
-            state.rejectedApplicants.add(event.applicants![i]);
-          }
-        }
-      }
-      emit(CastingCallState(
-          castingCallList: state.castingCallList,
-          appliedCastingCallList: state.appliedCastingCallList,
-          searchCastingCallList: state.searchCastingCallList,
-          selectedApplicants: state.selectedApplicants,
-          rejectedApplicants: state.rejectedApplicants,
-          unreviewedApplicants: state.unreviewedApplicants,
-          createdCastingCallList: state.createdCastingCallList));
-    });
+    // on<AddToSortedList>((event, emit) {
+    //   if (event.applicants != null) {
+    //     for (int i = 0; i < event.applicants!.length; i++) {
+    //       if (event.applicants![i].status == 'unreviewed') {
+    //         state.unreviewedApplicants.add(event.applicants![i]);
+    //       } else if (event.applicants![i].status == 'selected') {
+    //         state.selectedApplicants.add(event.applicants![i]);
+    //       } else {
+    //         state.rejectedApplicants.add(event.applicants![i]);
+    //       }
+    //     }
+    //   }
+    //   emit(CastingCallState(
+    //       castingCallList: state.castingCallList,
+    //       appliedCastingCallList: state.appliedCastingCallList,
+    //       searchCastingCallList: state.searchCastingCallList,
+    //       selectedApplicants: state.selectedApplicants,
+    //       rejectedApplicants: state.rejectedApplicants,
+    //       unreviewedApplicants: state.unreviewedApplicants,
+    //       createdCastingCallList: state.createdCastingCallList));
+    // });
 
     on<RemoveFromSortedList>((event, emit) {
       emit(CastingCallState(
@@ -122,12 +131,12 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
     });
 
     on<LoadCreatedCastingCall>((event, emit) async {
-      CastingCallModel castingCallModel = CastingCallModel();
-      // List<CurrentUserModel> userdetails = await getAllUsers();
-      // String userID = userdetails[0].id!;
-      String userID = '64be578400ae57be46dfbf86';
-      List<CastingCallModel> createdCastingCallList =
-          await getCDCastingCalls(castingCallModel, userID);
+      // ccm.CastingCallModel castingCallModel = ccm.CastingCallModel();
+      List<CurrentUserModel> userdetails = await getAllUsers();
+      String userID = userdetails[0].id!;
+      // String userID = '64be578400ae57be46dfbf86';
+      List<CreatedCastingCall> createdCastingCallList =
+          await getCDCastingCalls(userID);
       emit(CastingCallState(
           castingCallList: state.castingCallList,
           createdCastingCallList: createdCastingCallList,
@@ -138,9 +147,9 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
     });
   }
 
-  Future<List<CastingCallModel>> getCastingCalls(
-      CastingCallModel castingCallModel) async {
-    List<CastingCallModel> castingCallList = [];
+  Future<List<ccm.CastingCallModel>> getCastingCalls(
+      ccm.CastingCallModel castingCallModel) async {
+    List<ccm.CastingCallModel> castingCallList = [];
     const castingCallEndPoint = '/getPosts';
     String castingCallUrl = apiBase + castingCallEndPoint;
     final response = await http.post(Uri.parse(castingCallUrl),
@@ -152,7 +161,7 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
 
     if (response.statusCode == 200) {
       for (Map<String, dynamic> i in data) {
-        castingCallList.add(CastingCallModel.fromJson(i));
+        castingCallList.add(ccm.CastingCallModel.fromJson(i));
       }
       return castingCallList;
     } else {
@@ -171,8 +180,8 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
     print(response.statusCode);
   }
 
-  Future<List<CastingCallModel>> searchCall(String? text) async {
-    List<CastingCallModel> castingCallList = [];
+  Future<List<ccm.CastingCallModel>> searchCall(String? text) async {
+    List<ccm.CastingCallModel> castingCallList = [];
     if (text != null) {
       const logInendPoint = '/getPosts';
       final tokenURL = apiBase + logInendPoint;
@@ -190,7 +199,7 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body.toString());
         for (Map<String, dynamic> i in data) {
-          castingCallList.add(CastingCallModel.fromJson(i));
+          castingCallList.add(ccm.CastingCallModel.fromJson(i));
         }
         print('search succesful');
         return castingCallList;
@@ -205,23 +214,24 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
   }
 }
 
-Future<List<CastingCallModel>> getCDCastingCalls(
-    CastingCallModel castingCallModel, String userId) async {
-  List<CastingCallModel> castingCallList = [];
+Future<List<CreatedCastingCall>> getCDCastingCalls(String userId) async {
+  List<CreatedCastingCall> castingCallList = [];
   final castingCallEndPoint = '/getPosts?id=$userId';
   String castingCallUrl = apiBase + castingCallEndPoint;
   final response = await http.get(Uri.parse(castingCallUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       });
-  var data = jsonDecode(response.body.toString());
 
   if (response.statusCode == 200) {
+    print('successful');
+    var data = jsonDecode(response.body.toString());
     for (Map<String, dynamic> i in data) {
-      castingCallList.add(CastingCallModel.fromJson(i));
+      castingCallList.add(CreatedCastingCall.fromJson(i));
     }
     return castingCallList;
   } else {
+    print('failed');
     return castingCallList;
   }
 }

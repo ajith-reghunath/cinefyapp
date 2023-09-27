@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/login_bloc/login_event.dart';
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
+import '../../../domain/time_ago/time_display.dart';
 import '../../../infrastructure/Functions/current_user_functions.dart';
 import '../../castingcall/screen_casting_call.dart';
 import '../../common widgets/casting call card/castingCallCard.dart';
@@ -75,7 +76,8 @@ Widget recommended(double width, List<int> recommended) {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: recommended.length,
-                        itemBuilder: (BuildContext context, int index) {
+                        itemBuilder: (BuildContext context, int num) {
+                          int index = recommended.length - (num + 1);
                           bool isBookmarked = userState.bookmark!.contains(
                               castingCallstate
                                   .castingCallList![
@@ -119,6 +121,9 @@ Widget recommended(double width, List<int> recommended) {
                                       .castingCallList![recommended[index]]
                                       .language![0]
                                       .toString(),
+                              time: TimeDisplay().getTime(castingCallstate
+                                  .castingCallList![recommended[index]]
+                                  .createdAt!),
                             ),
                           );
                         },

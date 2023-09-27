@@ -1,15 +1,15 @@
 part of 'casting_call_bloc.dart';
 
 class CastingCallState {
-  List<CastingCallModel>? castingCallList;
-  List<CastingCallModel>? createdCastingCallList;
+  List<ccm.CastingCallModel>? castingCallList;
+  List<CreatedCastingCall>? createdCastingCallList;
   int? statusCode;
-  List<CastingCallModel> appliedCastingCallList = [];
-  List<CastingCallModel>? searchCastingCallList;
+  List<ccm.CastingCallModel> appliedCastingCallList = [];
+  List<ccm.CastingCallModel>? searchCastingCallList;
 
-  List<Applicants> selectedApplicants = [];
-  List<Applicants> rejectedApplicants = [];
-  List<Applicants> unreviewedApplicants = [];
+  List<ccm.Applicants> selectedApplicants = [];
+  List<ccm.Applicants> rejectedApplicants = [];
+  List<ccm.Applicants> unreviewedApplicants = [];
 
   CastingCallState(
       {this.castingCallList,

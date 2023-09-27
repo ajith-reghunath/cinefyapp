@@ -12,7 +12,8 @@ Widget castingcallCard(
     String? type,
     String? imageUrl,
     String? language,
-    bool? isBookmarked}) {
+    bool? isBookmarked,
+    String ?time}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -31,7 +32,7 @@ Widget castingcallCard(
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1(author!),
+            section1(author!,time??'1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -45,7 +46,7 @@ Widget castingcallCard(
   );
 }
 
-Widget section1(String author) {
+Widget section1(String author,String time) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -53,9 +54,9 @@ Widget section1(String author) {
         author,
         style: const TextStyle(color: shade2, fontSize: fontSize5),
       ),
-      const Text(
-        '1 Day ago',
-        style: TextStyle(color: shade2, fontSize: fontSize6),
+      Text(
+        time,
+        style: const TextStyle(color: shade2, fontSize: 11),
       )
     ],
   );
@@ -142,6 +143,7 @@ Widget recommendedCastingcallCard({
   String? imageUrl,
   String? language,
   required double width,
+  String ?time,
 }) {
   bool isBookmarked = true;
   return Padding(
@@ -161,7 +163,7 @@ Widget recommendedCastingcallCard({
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1(author!),
+            section1(author!,time??'1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -218,7 +220,8 @@ Widget appliedCastingcallCard(
     String? imageUrl,
     String? language,
     bool? isBookmarked,
-    String? castingStatus}) {
+    String? castingStatus,
+    String? time}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -238,7 +241,7 @@ Widget appliedCastingcallCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            section1(author!),
+            section1(author!,time??'1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -276,6 +279,7 @@ Widget cdInterfaceCastingcallCard({
   String? type,
   String? imageUrl,
   String? language,
+  String? time
 }) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
@@ -295,7 +299,7 @@ Widget cdInterfaceCastingcallCard({
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1(''),
+            section1('',time??'1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -348,6 +352,7 @@ Widget cdHomeCastingcallCard({
   String? imageUrl,
   String? language,
   int? count,
+  String? time
 }) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
@@ -368,7 +373,7 @@ Widget cdHomeCastingcallCard({
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            section1(''),
+            section1('',time??'1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),

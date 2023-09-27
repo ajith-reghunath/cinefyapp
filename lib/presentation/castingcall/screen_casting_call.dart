@@ -6,11 +6,13 @@ import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
+import '../../domain/time_ago/time_display.dart';
 import '../common widgets/casting call card/castingCallCard.dart';
 
 // ignore: must_be_immutable
 class ScreenCastingCall extends StatelessWidget {
-  ScreenCastingCall({super.key, required this.index, required this.isBookmarked});
+  ScreenCastingCall(
+      {super.key, required this.index, required this.isBookmarked});
   int index;
   bool isBookmarked;
 
@@ -52,7 +54,9 @@ class ScreenCastingCall extends StatelessWidget {
                             : castingCallstate
                                 .castingCallList![index].language![0]
                                 .toString(),
-                        isBookmarked: isBookmarked        ),
+                        isBookmarked: isBookmarked,
+                        time: TimeDisplay().getTime(castingCallstate
+                            .castingCallList![index].createdAt!)),
                     sizedBoxH20(),
                     options1(width),
                     sizedBox1(),
