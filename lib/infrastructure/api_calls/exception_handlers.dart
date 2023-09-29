@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
 class ExceptionHandlers {
   getExceptionString(error) {
     if (error is SocketException) {
-      print('socket exception');
       return 'No internet connection';
     } else if (error is HttpException) {
       return 'HTTP error occured';
@@ -15,8 +12,6 @@ class ExceptionHandlers {
     } else if (error is TimeoutException) {
       return 'Request timedout';
     } else if (error is BadRequestException) {
-      print('bad request exception handled');
-      print('error message : ${error.message.toString()}');
       return error.message.toString();
     } else if (error is UnAuthorizedException) {
       return error.message.toString();
@@ -25,7 +20,6 @@ class ExceptionHandlers {
     } else if (error is FetchDataException) {
       return error.message.toString();
     } else {
-      print(error.toString());
       return 'Unknown error occured';
     }
   }

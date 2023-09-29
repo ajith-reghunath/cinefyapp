@@ -1,3 +1,4 @@
+import 'package:cinefy/application/bloc_user/user_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/domain/time_ago/time_display.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +9,13 @@ class ScreenChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CastingCallBloc, CastingCallState>(
+    return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
         return SafeArea(
           child: Center(
             child: TextButton(
                 onPressed: () {
-                  String time = '2023-07-17T20:01:22.537Z';
-                  print(TimeDisplay().getTime(time));
+                  print(state.bookmark!.length);
                 },
                 child: const Text('click me')),
           ),

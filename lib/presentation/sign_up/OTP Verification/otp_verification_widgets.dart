@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:cinefy/core/constants.dart';
+import 'package:cinefy/domain/timer/timer_cubit.dart';
+import 'package:cinefy/domain/timer/timer_states.dart';
+import 'package:cinefy/presentation/sign_up/Enter%20Mobile%20Number/enter_mobile_number_screen.dart';
 import 'package:cinefy/presentation/sign_up/Enter%20Name/enter_name_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +29,8 @@ Widget otpVerificationForm(double width) {
             _otpVerifyField(),
             sizedBox3(),
             otpNumberValidation(),
+            sizedBoxH20(),
+            const ShowCountDown(),
             sizedBoxH20(),
             divider(),
             sizedBoxH50(),
@@ -215,20 +220,20 @@ Widget _verifyOtpButton(double width) {
           backgroundColor: const MaterialStatePropertyAll(shade1)),
       onPressed: () {
         displayOtpNumberValidation = true;
-          context.read<SignUpBloc>().add(VerifyotpButtonClickedInitial());
-          var data = jsonDecode(signUpState.otpResponse!.body.toString());
-          if (data['code'].toString() == signUpState.otpEntered.toString()) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) {
-                return (EnterNameScreen());
-              }),
-            );
-          } else {
-            showSnackBar(context, 'Incorrect OTP');
-            print(data['message']);
-            print(signUpState.otpEntered);
-          }
+        context.read<SignUpBloc>().add(VerifyotpButtonClickedInitial());
+        var data = jsonDecode(signUpState.otpResponse!.body.toString());
+        if (data['code'].toString() == signUpState.otpEntered.toString()) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) {
+              return (EnterNameScreen());
+            }),
+          );
+        } else {
+          showSnackBar(context, 'Incorrect OTP');
+          print(data['message']);
+          print(signUpState.otpEntered);
+        }
 
         //IGNORE
 
@@ -275,7 +280,7 @@ Widget description() {
     builder: (context, state) {
       return Text(
         'Code has been send to \n${state.phone}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: fontSize2,
           color: shade2,
         ),
@@ -283,4 +288,44 @@ Widget description() {
       );
     },
   );
+}
+
+// ignore: must_be_immutable
+class ShowCountDown extends StatelessWidget {
+  const ShowCountDown({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimerCubit, TimerState>(
+      builder: (context, state) {
+        if (state is TimerInitial) {
+          return TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return const EnterMobileNumberScreen();
+                }));
+              },
+              child: const Text(
+                'Resend OTP',
+                style: TextStyle(
+                  fontSize: fontSize2,
+                  color: accentColor,
+                ),
+              ));
+        } else if (state is TimerProgress) {
+          return Center(
+            child: Text(
+              'Resend OTP in ${state.elapsed!} seconds',
+              style: const TextStyle(
+                fontSize: fontSize2,
+                color: shade2,
+              ),
+            ),
+          );
+        }
+        return Container();
+      },
+    );
+  }
 }

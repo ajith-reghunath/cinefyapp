@@ -119,7 +119,7 @@ class ScreenCdHome extends StatelessWidget {
                                       children: [
                                         sizedBoxH20(),
                                         topSection(
-                                            userState.name ?? 'artist', width)
+                                            userState.name ?? 'casting director', width)
                                       ],
                                     )
                                   : CdNotFoundScreen(

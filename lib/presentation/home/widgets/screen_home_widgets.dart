@@ -78,11 +78,7 @@ Widget recommended(double width, List<int> recommended) {
                         itemCount: recommended.length,
                         itemBuilder: (BuildContext context, int num) {
                           int index = recommended.length - (num + 1);
-                          bool isBookmarked = userState.bookmark!.contains(
-                              castingCallstate
-                                  .castingCallList![
-                                      userState.recommended[index]]
-                                  .sId);
+                          bool isBookmarked = false;
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(

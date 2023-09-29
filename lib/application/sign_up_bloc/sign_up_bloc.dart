@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:cinefy/domain/otp/otp_model.dart';
 import 'package:cinefy/infrastructure/api_calls/api_calls.dart';
+import 'package:cinefy/infrastructure/api_calls/base_client.dart'
+    as base_client;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../../core/constants.dart';
@@ -38,18 +40,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           email: state.email,
           password: state.password,
           type: state.type));
-      if (state.phone.length == 10) {
-        OtpModel otpModel = OtpModel(mobileNumber: state.phone);
-        Response response = await getOtp(otpModel);
-        emit(
-          SignUpState(
-              otpResponse: response,
-              phone: event.phone!,
-              email: state.email,
-              password: state.password,
-              type: state.type),
-        );
-      }
+      // if (state.phone.length == 10) {
+      //   OtpModel otpModel = OtpModel(mobileNumber: state.phone);
+      //   Response response = await getOtp(otpModel);
+      //   emit(
+      //     SignUpState(
+      //         otpResponse: response,
+      //         phone: event.phone!,
+      //         email: state.email,
+      //         password: state.password,
+      //         type: state.type),
+      //   );
+      // }
     });
 
     // on<SignUpClicked>((event, emit) async {
@@ -78,15 +80,45 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       emit(SignUpState(
           type: 'recruiter', email: state.email, password: state.password));
     });
-
-    on<GenerateOtpButtonClicked>((event, emit) async {
-      print('otp response : ${state.otpResponse!.body}');
+    on<GenerateOtpButtonInitialized>((event, emit) async {
       emit(SignUpState(
-          otpResponse: state.otpResponse,
-          type: state.type,
+          phone: state.phone,
           email: state.email,
           password: state.password,
-          phone: state.phone));
+          type: state.type,
+          otpStatus: 'Initial'));
+    });
+
+    on<GenerateOtpButtonClicked>((event, emit) async {
+      OtpModel otpModel = OtpModel(mobileNumber: state.phone);
+      Response? response =
+          await base_client.BaseClient().otpApi('/sendOtp', otpModel);
+      if (response != null) {
+        emit(
+          SignUpState(
+              otpResponse: response,
+              phone: state.phone,
+              email: state.email,
+              password: state.password,
+              type: state.type,
+              otpStatus: 'Success'),
+        );
+      } else {
+        emit(SignUpState(
+            phone: state.phone,
+            email: state.email,
+            password: state.password,
+            type: state.type,
+            otpStatus: 'Failed'));
+      }
+
+      // print('otp response : ${state.otpResponse!.body}');
+      // emit(SignUpState(
+      //     otpResponse: state.otpResponse,
+      //     type: state.type,
+      //     email: state.email,
+      //     password: state.password,
+      //     phone: state.phone));
     });
 
     on<OtpAdded>((event, emit) async {

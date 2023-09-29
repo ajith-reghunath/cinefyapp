@@ -8,7 +8,6 @@ import 'package:cinefy/presentation/main_page/widgets/bottom_nav.dart';
 import 'package:cinefy/presentation/profile/screen_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cinefy/presentation/sign_up/OTP Verification/otp_verification_screen.dart';
 import '../../core/colors.dart';
 
 // ignore: must_be_immutable
@@ -19,7 +18,7 @@ class ScreenMainPage extends StatelessWidget {
     ScreenHome(),
     const ScreenBookmark(),
     ScreenApplied(),
-    OtpVerificationScreen(),
+    const ScreenChat(),
     ScreenProfile()
   ];
 

@@ -4,6 +4,7 @@ import 'package:cinefy/application/artist_profile_bloc/artist_profile_bloc.dart'
 import 'package:cinefy/application/create_cc_bloc/bloc/create_cc_bloc.dart';
 import 'package:cinefy/application/ui_bloc/ui_bloc.dart';
 import 'package:cinefy/core/colors.dart';
+import 'package:cinefy/domain/timer/timer_cubit.dart';
 import 'package:cinefy/presentation/splash%20screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => OptionBloc()),
           BlocProvider(create: (context) => ArtistProfileBloc()),
           BlocProvider(create: (context) => CreateCcBloc()),
-          BlocProvider(create: (context) => UiBloc())
+          BlocProvider(create: (context) => UiBloc()),
+          BlocProvider(create: (context) => TimerCubit()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

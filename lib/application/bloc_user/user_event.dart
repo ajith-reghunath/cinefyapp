@@ -16,6 +16,8 @@ class SaveUser extends UserEvent {}
 
 class UserApplied extends UserEvent {}
 
+class UserLoggedOut extends UserEvent{}
+
 class IsApplied extends UserEvent {
   List<package1.Applicants>? applicantsList;
   String? id;

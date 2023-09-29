@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 import '../../domain/Login/log_in_model.dart';
+import '../../domain/otp/otp_model.dart';
 import '../../domain/sign_up/sign_up_model.dart';
 import '../Functions/current_user_functions.dart';
 import '../Models/current_user.dart';
@@ -31,7 +32,7 @@ class BaseClient {
       print('status code : ${response.statusCode}');
       return _processResponse(response);
     } catch (e) {
-      final errorMessage = ExceptionHandlers().getExceptionString(e);
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
       print('Handled Error: $errorMessage');
       logInMessage = errorMessage;
     }
@@ -48,9 +49,26 @@ class BaseClient {
           body: jsonEncode(userSignUp.toDatabaseJson()));
       return _processResponse(response);
     } catch (e) {
-      final errorMessage = ExceptionHandlers().getExceptionString(e);
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
       print('Handled Error: $errorMessage');
       signUpMessage = errorMessage;
+    }
+  }
+
+  Future<dynamic> otpApi(String urlEndPoint, OtpModel otpModel) async {
+    final url = apiBase + urlEndPoint;
+    var uri = Uri.parse(url);
+    try {
+      final response = await http.post(uri,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(otpModel.toDatabaseJson()));
+      return _processResponse(response);
+    } catch (e) {
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
+      print('Handled Error: $errorMessage');
+      snackBarMessage = errorMessage;
     }
   }
 

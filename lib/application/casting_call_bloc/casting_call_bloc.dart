@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:cinefy/domain/created_casting_call/created_casting_call_model.dart';
 import 'dart:convert';
 
-
 import '../../core/constants.dart';
 import '../../domain/casting_call/casting_call_model.dart'as ccm;
 import 'package:http/http.dart' as http;

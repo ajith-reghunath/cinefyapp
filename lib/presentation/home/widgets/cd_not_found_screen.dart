@@ -26,7 +26,6 @@ class CdNotFoundScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 200,
                 height: 60,
                 child: Row(
                   children: [

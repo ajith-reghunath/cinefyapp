@@ -183,9 +183,7 @@ class ScreenHome extends StatelessWidget {
                                                 .castingCallList![index]
                                                 .language![0]
                                                 .toString(),
-                                        isBookmarked: userState.bookmark!
-                                            .contains(castingCallstate
-                                                .castingCallList![index].sId),
+                                        isBookmarked: false,
                                         time: TimeDisplay().getTime(
                                             castingCallstate
                                                 .castingCallList![index]

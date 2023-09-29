@@ -30,6 +30,8 @@ class UserButtonClicked extends SignUpEvent {}
 
 class RecruiterButtonClicked extends SignUpEvent {}
 
+class GenerateOtpButtonInitialized extends SignUpEvent{}
+
 class GenerateOtpButtonClicked extends SignUpEvent {}
 
 class OtpAdded extends SignUpEvent {

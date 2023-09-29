@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:cinefy/core/constants.dart';
-import 'package:cinefy/presentation/sign_up/OTP%20Verification/otp_verification_screen.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,22 +80,10 @@ Widget _generateOtpButton(double width) {
           ),
           backgroundColor: const MaterialStatePropertyAll(shade1)),
       onPressed: () {
-        print(signUpState.isPhoneValid);
         displayPhoneNumberValidation = true;
-        context.read<SignUpBloc>().add(GenerateOtpButtonClicked());
-        print(signUpState.email);
+        context.read<SignUpBloc>().add(GenerateOtpButtonInitialized());
         if (signUpState.isPhoneValid) {
-          if (signUpState.otpResponse!.statusCode == 200) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) {
-                return (const OtpVerificationScreen());
-              }),
-            );
-          } else {
-            var data = jsonDecode(signUpState.otpResponse!.body.toString());
-            showSnackBar(context, data['message']);
-          }
+           context.read<SignUpBloc>().add(GenerateOtpButtonClicked());
           // if (signUpState.response!.statusCode == 200) {
           //   Navigator.push(
           //     context,

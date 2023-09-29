@@ -7,6 +7,7 @@ class SignUpState {
   final String phone;
   final String type;
   final String otpEntered;
+  String otpStatus;
   Response? signUpResponse;
   Response? otpResponse;
 
@@ -33,7 +34,8 @@ class SignUpState {
       this.type = '',
       this.otpEntered = '',
       this.signUpResponse,
-      this.otpResponse});
+      this.otpResponse,
+      this.otpStatus='Initial'});
 
   SignUpState copyWith({
     String? email,
