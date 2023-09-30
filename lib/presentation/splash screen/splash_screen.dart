@@ -19,13 +19,16 @@ import '../main_page/screen_main_page.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-  
+
   void startTimer(BuildContext context) async {
+    // await clearUserData();
     bool isEmpty = await userFunctions.isUserDataEmpty();
+    print('Is empty : $isEmpty');
     GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
     bool isRecruiter = false;
     if (isEmpty == false) {
       isRecruiter = await isCastingDirector();
+      print('Is recruiter : $isRecruiter');
     }
     Timer(const Duration(seconds: 2), () {
       if (isEmpty) {

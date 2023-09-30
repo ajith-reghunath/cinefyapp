@@ -1,22 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'user_model.g.dart';
+part 'loaduser2_model.g.dart';
 
 @JsonSerializable()
-class UserModel {
-  String? message;
-  User? user;
-  String? token;
-
-  UserModel({this.message, this.user, this.token});
-
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
-}
-
-@JsonSerializable()
-class User {
+class UserModel2 {
   Profile? profile;
   String? sId;
   String? name;
@@ -28,7 +14,7 @@ class User {
   int? iV;
   List<String>? bookmarks;
 
-  User(
+  UserModel2(
       {this.profile,
       this.sId,
       this.name,
@@ -40,9 +26,10 @@ class User {
       this.iV,
       this.bookmarks});
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UserModel2.fromJson(Map<String, dynamic> json) =>
+      _$UserModel2FromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserModel2ToJson(this);
 }
 
 @JsonSerializable()
@@ -76,8 +63,7 @@ class Profile {
       this.roles,
       this.languages});
 
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }

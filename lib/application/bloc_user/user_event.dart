@@ -16,7 +16,7 @@ class SaveUser extends UserEvent {}
 
 class UserApplied extends UserEvent {}
 
-class UserLoggedOut extends UserEvent{}
+class UserLoggedOut extends UserEvent {}
 
 class IsApplied extends UserEvent {
   List<package1.Applicants>? applicantsList;
@@ -30,9 +30,14 @@ class RecommendedCastingCalls extends UserEvent {
   RecommendedCastingCalls({this.castingCallList});
 }
 
-class Bookmark extends UserEvent {}
+class Bookmark extends UserEvent {
+  String? postID;
+  Bookmark({this.postID});
+}
 
 class UpdateAppliedList extends UserEvent {
-  CastingCallModel ? castingCall;
+  CastingCallModel? castingCall;
   UpdateAppliedList({this.castingCall});
 }
+
+class RefreshUserState extends UserEvent{}

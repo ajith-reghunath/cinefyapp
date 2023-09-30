@@ -30,7 +30,8 @@ class UserState {
   List<CastingCallModel>? appliedCastingCallList;
 
   UserState(
-      {this.message,
+      {
+      this.message,
       this.token,
       this.sId,
       this.name,

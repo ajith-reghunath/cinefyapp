@@ -145,6 +145,9 @@ class ScreenHome extends StatelessWidget {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
+                                      print(castingCallstate
+                                                .castingCallList![index].sId);
+                                      print(userState.bookmark!.length);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -183,11 +186,14 @@ class ScreenHome extends StatelessWidget {
                                                 .castingCallList![index]
                                                 .language![0]
                                                 .toString(),
-                                        isBookmarked: false,
-                                        time: TimeDisplay().getTime(
-                                            castingCallstate
-                                                .castingCallList![index]
-                                                .createdAt!)),
+                                        isBookmarked: userState.bookmark!
+                                            .contains(castingCallstate
+                                                .castingCallList![index].sId),
+                                        time: TimeDisplay().getTime(castingCallstate
+                                            .castingCallList![index]
+                                            .createdAt!),
+                                        postID: castingCallstate
+                                            .castingCallList![index].sId),
                                   ),
                                 );
                               },

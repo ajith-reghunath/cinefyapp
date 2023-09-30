@@ -1,26 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_model.dart';
+part of 'loaduser2_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      message: json['message'] as String?,
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      token: json['token'] as String?,
-    );
-
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'message': instance.message,
-      'user': instance.user,
-      'token': instance.token,
-    };
-
-User _$UserFromJson(Map<String, dynamic> json) => User(
+UserModel2 _$UserModel2FromJson(Map<String, dynamic> json) => UserModel2(
       profile: json['profile'] == null
           ? null
           : Profile.fromJson(json['profile'] as Map<String, dynamic>),
@@ -37,7 +23,8 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           .toList(),
     );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$UserModel2ToJson(UserModel2 instance) =>
+    <String, dynamic>{
       'profile': instance.profile,
       '_id': instance.sId,
       'name': instance.name,

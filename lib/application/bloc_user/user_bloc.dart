@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constants.dart';
 import '../../domain/Login/user_model.dart';
 import '../../domain/casting_call/casting_call_model.dart';
+import '../../domain/user/loaduser2_model.dart' as loaduser;
 
 part 'user_state.dart';
 
@@ -19,7 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         print('check : cccccc');
         print((event.response!.body));
         var userData = jsonDecode(event.response!.body);
-        UserModel userModel = await UserModel.fromJson(userData);
+        UserModel userModel = UserModel.fromJson(userData);
 
         emit(UserState(
             message: userData['message'],
@@ -55,33 +56,36 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<LoadUserMethod2>((event, emit) async {
       List<CurrentUserModel> userdetails = await getAllUsers();
+      print('length : ${userdetails.length}');
       if (userdetails.isNotEmpty) {
+        print('id : ${userdetails[0].id!}');
         Response response = await getUser(userdetails[0].id!);
+
         var userData = jsonDecode(response.body);
+        loaduser.UserModel2 userModel2 = loaduser.UserModel2.fromJson(userData);
         // print(response.body);
-        emit(
-          UserState(
-              sId: userData['_id'],
-              name: userData['profile']['name'],
-              email: userData['email'],
-              phone: userData['phone'],
-              password: userData['password'],
-              type: userData['type'],
-              isDelete: userData['isDelete'],
-              iV: userData['__v'],
-              roles: userData['profile']['roles'],
-              skills: userData['profile']['skills'],
-              certifications: userData['profile']['certifications'],
-              languages: userData['profile']['languages'],
-              workExp: userData['profile']['workExp'],
-              education: userData['profile']['education'],
-              age: userData['profile']['age'],
-              bio: userData['profile']['bio'],
-              gender: userData['profile']['gender'],
-              intro: userData['profile']['intro'],
-              photo: userData['profile']['photo'],
-              bookmark: userData['bookmarks']),
-        );
+        emit(UserState(
+          sId: userModel2.sId,
+          name: userModel2.profile!.name,
+          email: userModel2.email,
+          phone: userModel2.phone,
+          password: userModel2.password,
+          type: userModel2.type,
+          isDelete: userModel2.isDelete,
+          iV: userModel2.iV,
+          roles: userModel2.profile!.roles,
+          skills: userModel2.profile!.skills,
+          certifications: userModel2.profile!.certifications,
+          languages: userModel2.profile!.languages,
+          workExp: userModel2.profile!.workExp,
+          education: userModel2.profile!.education,
+          age: userModel2.profile!.age,
+          bio: userModel2.profile!.bio,
+          gender: userModel2.profile!.gender,
+          intro: userModel2.profile!.intro,
+          photo: userModel2.profile!.photo,
+          bookmark: userModel2.bookmarks,
+        ));
       }
     });
 
@@ -118,7 +122,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<Bookmark>((event, emit) {
-      addBookmark();
+      addBookmark(state.sId!, event.postID!);
     });
 
     on<UpdateAppliedList>((event, emit) {
@@ -132,6 +136,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
       }
+    });
+
+    on<RefreshUserState>((event, emit){
+      emit(UserState(
+          sId: state.sId,
+          name: state.name,
+          email: state.email,
+          phone: state.phone,
+          password: state.password,
+          type: state.type,
+          isDelete: state.isDelete,
+          iV: state.iV,
+          roles: state.roles,
+          skills: state.skills,
+          certifications: state.certifications,
+          languages: state.languages,
+          workExp: state.workExp,
+          education: state.education,
+          age: state.age,
+          bio: state.bio,
+          gender: state.gender,
+          intro: state.intro,
+          photo: state.photo,
+          bookmark: state.bookmark,
+        ));
     });
   }
 
@@ -153,11 +182,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     return response;
   }
 
-  addBookmark() async {
-    const urlEndPoint =
-        '/bookmark?id=64e9818923a6a879c7b4e484&user=64b4d61582387c8592a7f962';
+  addBookmark(String userID, String postID) async {
+    final urlEndPoint = '/bookmark?id=$postID&user=$userID';
     final url = apiBase + urlEndPoint;
     final response = await http.patch(Uri.parse(url));
-    print(response.statusCode);
+    print('bookmarked status code : ${response.statusCode}');
   }
 }

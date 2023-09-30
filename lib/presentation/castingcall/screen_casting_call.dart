@@ -56,7 +56,8 @@ class ScreenCastingCall extends StatelessWidget {
                                 .toString(),
                         isBookmarked: isBookmarked,
                         time: TimeDisplay().getTime(castingCallstate
-                            .castingCallList![index].createdAt!)),
+                            .castingCallList![index].createdAt!),
+                            postID: castingCallstate.castingCallList![index].sId),
                     sizedBoxH20(),
                     options1(width),
                     sizedBox1(),

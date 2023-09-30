@@ -8,7 +8,7 @@ part of 'casting_call_model.dart';
 
 CastingCallModel _$CastingCallModelFromJson(Map<String, dynamic> json) =>
     CastingCallModel(
-      sId: json['sId'] as String?,
+      sId: json['_id'] as String?,
       title: json['title'] as String?,
       subtitle: json['subtitle'] as String?,
       shortdescription: json['shortdescription'] as String?,
@@ -19,7 +19,7 @@ CastingCallModel _$CastingCallModelFromJson(Map<String, dynamic> json) =>
       age: (json['age'] as List<dynamic>?)?.map((e) => e as int).toList(),
       date: json['date'] as String?,
       description: json['description'] as String?,
-      iV: json['iV'] as int?,
+      iV: json['__v'] as int?,
       projectType: json['projectType'] as String?,
       gender: json['gender'] as String?,
       language: (json['language'] as List<dynamic>?)
@@ -41,7 +41,7 @@ CastingCallModel _$CastingCallModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CastingCallModelToJson(CastingCallModel instance) =>
     <String, dynamic>{
-      'sId': instance.sId,
+      '_id': instance.sId,
       'title': instance.title,
       'subtitle': instance.subtitle,
       'shortdescription': instance.shortdescription,
@@ -51,7 +51,7 @@ Map<String, dynamic> _$CastingCallModelToJson(CastingCallModel instance) =>
       'age': instance.age,
       'date': instance.date,
       'description': instance.description,
-      'iV': instance.iV,
+      '__v': instance.iV,
       'projectType': instance.projectType,
       'gender': instance.gender,
       'language': instance.language,
@@ -68,41 +68,41 @@ Map<String, dynamic> _$CastingCallModelToJson(CastingCallModel instance) =>
 Applicants _$ApplicantsFromJson(Map<String, dynamic> json) => Applicants(
       user: json['user'] as String?,
       status: json['status'] as String?,
-      sId: json['sId'] as String?,
+      sId: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$ApplicantsToJson(Applicants instance) =>
     <String, dynamic>{
       'user': instance.user,
       'status': instance.status,
-      'sId': instance.sId,
+      '_id': instance.sId,
     };
 
 Author _$AuthorFromJson(Map<String, dynamic> json) => Author(
       profile: json['profile'] == null
           ? null
           : Profile.fromJson(json['profile'] as Map<String, dynamic>),
-      sId: json['sId'] as String?,
+      sId: json['_id'] as String?,
       name: json['name'] as String?,
       email: json['email'] as String?,
       password: json['password'] as String?,
       type: json['type'] as String?,
       profilePic: json['profilePic'] as String?,
       isDelete: json['isDelete'] as bool?,
-      iV: json['iV'] as int?,
+      iV: json['__v'] as int?,
       phone: json['phone'] as String?,
     );
 
 Map<String, dynamic> _$AuthorToJson(Author instance) => <String, dynamic>{
       'profile': instance.profile,
-      'sId': instance.sId,
+      '_id': instance.sId,
       'name': instance.name,
       'email': instance.email,
       'password': instance.password,
       'type': instance.type,
       'profilePic': instance.profilePic,
       'isDelete': instance.isDelete,
-      'iV': instance.iV,
+      '__vC': instance.iV,
       'phone': instance.phone,
     };
 

@@ -1,5 +1,8 @@
+import 'package:cinefy/application/bloc_user/user_bloc.dart';
+import 'package:cinefy/application/bloc_user/user_event.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
@@ -13,7 +16,8 @@ Widget castingcallCard(
     String? imageUrl,
     String? language,
     bool? isBookmarked,
-    String ?time}) {
+    String? time,
+    String? postID}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -32,11 +36,11 @@ Widget castingcallCard(
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1(author!,time??'1 day ago'),
+            section1(author!, time ?? '1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
-            section3(roles!, title!, width, isBookmarked!),
+            section3(roles!, title!, width, isBookmarked!,postID!),
             sizedBoxH10(),
             section4(type!, language!)
           ],
@@ -46,7 +50,7 @@ Widget castingcallCard(
   );
 }
 
-Widget section1(String author,String time) {
+Widget section1(String author, String time) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -74,37 +78,45 @@ Widget section2(double width, String? imageUrl) {
 }
 
 Widget section3(
-    List<String> roles, String title, double width, bool isBookmarked) {
+    List<String> roles, String title, double width, bool isBookmarked, String postID) {
   String joinedString = joinStrings(roles);
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Column(
+  return BlocBuilder<UserBloc, UserState>(
+    builder: (context, state) {
+      return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: width * 0.75,
-            child: Text(
-              joinedString,
-              softWrap: true,
-              style: const TextStyle(
-                  fontFamily: 'PoppinsMedium',
-                  fontSize: fontSize4,
-                  color: Color(0xff000000)),
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: width * 0.75,
+                child: Text(
+                  joinedString,
+                  softWrap: true,
+                  style: const TextStyle(
+                      fontFamily: 'PoppinsMedium',
+                      fontSize: fontSize4,
+                      color: Color(0xff000000)),
+                ),
+              ),
+              Text(
+                title,
+                style: const TextStyle(fontSize: fontSize3, color: shade2),
+              ),
+            ],
           ),
-          Text(
-            title,
-            style: const TextStyle(fontSize: fontSize3, color: shade2),
-          ),
+          IconButton(
+              onPressed: () {
+                context.read<UserBloc>().add(Bookmark(postID: postID));
+                context.read<UserBloc>().add(RefreshUserState());
+              },
+              icon:
+                  Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_outline))
         ],
-      ),
-      IconButton(
-          onPressed: () {},
-          icon: Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_outline))
-    ],
+      );
+    },
   );
 }
 
@@ -143,7 +155,7 @@ Widget recommendedCastingcallCard({
   String? imageUrl,
   String? language,
   required double width,
-  String ?time,
+  String? time,
 }) {
   bool isBookmarked = true;
   return Padding(
@@ -163,7 +175,7 @@ Widget recommendedCastingcallCard({
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1(author!,time??'1 day ago'),
+            section1(author!, time ?? '1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -221,7 +233,8 @@ Widget appliedCastingcallCard(
     String? language,
     bool? isBookmarked,
     String? castingStatus,
-    String? time}) {
+    String? time,
+    String? postID}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -241,11 +254,11 @@ Widget appliedCastingcallCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            section1(author!,time??'1 day ago'),
+            section1(author!, time ?? '1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
-            section3(roles!, title!, width, isBookmarked!),
+            section3(roles!, title!, width, isBookmarked!,postID!),
             sizedBoxH10(),
             section4(type!, language!),
             sizedBoxH10(),
@@ -272,15 +285,14 @@ Widget castingCallStatus(String status) {
   return Text(status, style: TextStyle(fontSize: fontSize3, color: textcolor));
 }
 
-Widget cdInterfaceCastingcallCard({
-  BuildContext? context,
-  List<String>? roles,
-  String? title,
-  String? type,
-  String? imageUrl,
-  String? language,
-  String? time
-}) {
+Widget cdInterfaceCastingcallCard(
+    {BuildContext? context,
+    List<String>? roles,
+    String? title,
+    String? type,
+    String? imageUrl,
+    String? language,
+    String? time}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -299,7 +311,7 @@ Widget cdInterfaceCastingcallCard({
         padding: const EdgeInsets.all(11),
         child: Column(
           children: [
-            section1('',time??'1 day ago'),
+            section1('', time ?? '1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -344,16 +356,15 @@ Widget section3New(List<String> roles, String title, double width) {
   );
 }
 
-Widget cdHomeCastingcallCard({
-  BuildContext? context,
-  List<String>? roles,
-  String? title,
-  String? type,
-  String? imageUrl,
-  String? language,
-  int? count,
-  String? time
-}) {
+Widget cdHomeCastingcallCard(
+    {BuildContext? context,
+    List<String>? roles,
+    String? title,
+    String? type,
+    String? imageUrl,
+    String? language,
+    int? count,
+    String? time}) {
   final width = MediaQuery.of(context!).size.width;
   return Padding(
     padding: const EdgeInsets.all(12),
@@ -373,7 +384,7 @@ Widget cdHomeCastingcallCard({
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            section1('',time??'1 day ago'),
+            section1('', time ?? '1 day ago'),
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
@@ -389,10 +400,15 @@ Widget cdHomeCastingcallCard({
 
 Widget totalProfileCount(int count) {
   return Container(
-    decoration: BoxDecoration(border: Border.all(width: 1,color: accentColor),borderRadius: BorderRadius.circular(7)),
+    decoration: BoxDecoration(
+        border: Border.all(width: 1, color: accentColor),
+        borderRadius: BorderRadius.circular(7)),
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
-      child: Text('$count Profiles Received',style: const TextStyle(fontSize: fontSize3, color: accentColor),),
+      child: Text(
+        '$count Profiles Received',
+        style: const TextStyle(fontSize: fontSize3, color: accentColor),
+      ),
     ),
   );
 }

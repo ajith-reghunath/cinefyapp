@@ -16,7 +16,7 @@ class ScreenCastingDirectorMainPage extends StatelessWidget {
   final _pages = [
     ScreenCdHome(),
     const ScreenCreateCastingCall(),
-    const ScreenChat(),
+    ChatScreen(),
   ];
 
   @override

@@ -1,26 +1,86 @@
-import 'package:cinefy/application/bloc_user/user_bloc.dart';
-import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
-import 'package:cinefy/domain/time_ago/time_display.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class ScreenChat extends StatelessWidget {
-  const ScreenChat({super.key});
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  IO.Socket? socket;
+  TextEditingController messageController = TextEditingController();
+  List<String> messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    connectToServer();
+  }
+
+  void connectToServer() async {
+    socket = await IO.io('http://localhost:3000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+
+    if (socket != null) {
+      socket!.connect();
+      socket!.on('chat_message', (data) {
+        setState(() {
+          messages.add(data);
+        });
+      });
+    } else {
+      print('socket is empty');
+    }
+  }
+
+  void sendMessage() {
+    String message = messageController.text.trim();
+    if(socket != null){
+      if (message.isNotEmpty) {
+      socket!.emit('chat_message', message);
+      messageController.clear();
+    }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, state) {
-        return SafeArea(
-          child: Center(
-            child: TextButton(
-                onPressed: () {
-                  print(state.bookmark!.length);
-                },
-                child: const Text('click me')),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Socket.IO Chat'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(messages[index]),
+                );
+              },
+            ),
           ),
-        );
-      },
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: messageController,
+                  decoration: InputDecoration(
+                    hintText: 'Type your message here...',
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                onPressed: sendMessage,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
