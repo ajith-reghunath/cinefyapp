@@ -72,6 +72,21 @@ class BaseClient {
     }
   }
 
+  Future<dynamic> bookmarkApi(String userID) async {
+    String urlEndPoint = '/bookmark?id=$userID';
+    final url = apiBase + urlEndPoint;
+    var uri = Uri.parse(url);
+    try {
+      final response = await http.get(uri);
+      print('load bookmars status code : ${response.statusCode}');
+      return _processResponse(response);
+    } catch (e) {
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
+      print('Handled Error: $errorMessage');
+      logInMessage = errorMessage;
+    }
+  }
+
   Future<dynamic> createCcApi({
     PlatformFile? pickFile,
     String? title,

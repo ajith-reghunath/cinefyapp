@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cinefy/domain/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -18,14 +21,15 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void connectToServer() async {
-    socket = await IO.io('http://localhost:3000', <String, dynamic>{
+    socket = IO.io('https://app.nex-gen.shop/', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });
 
     if (socket != null) {
       socket!.connect();
-      socket!.on('chat_message', (data) {
+      socket!.emit('add-user', json.encode('64e9818923a6a879c7b4e484'));
+      socket!.on('msg-recieve', (data) {
         setState(() {
           messages.add(data);
         });
@@ -37,12 +41,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage() {
     String message = messageController.text.trim();
-    if(socket != null){
-      if (message.isNotEmpty) {
-      socket!.emit('chat_message', message);
-      messageController.clear();
+    if (socket != null) {
+      socket!.emit('send-msg', {
+        'from': '64e9818923a6a879c7b4e484',
+        'to': '64be578400ae57be46dfbf86',
+        'message': 'hai mahan',
+        'time': '2023-09-30T12:10:39.179Z'
+      });
     }
-    }
+    setState(() {
+      messages.add(message);
+    });
   }
 
   @override

@@ -19,7 +19,7 @@ CastingCallModel _$CastingCallModelFromJson(Map<String, dynamic> json) =>
       age: (json['age'] as List<dynamic>?)?.map((e) => e as int).toList(),
       date: json['date'] as String?,
       description: json['description'] as String?,
-      iV: json['__v'] as int?,
+      iV: json['iV'] as int?,
       projectType: json['projectType'] as String?,
       gender: json['gender'] as String?,
       language: (json['language'] as List<dynamic>?)
@@ -51,7 +51,7 @@ Map<String, dynamic> _$CastingCallModelToJson(CastingCallModel instance) =>
       'age': instance.age,
       'date': instance.date,
       'description': instance.description,
-      '__v': instance.iV,
+      'iV': instance.iV,
       'projectType': instance.projectType,
       'gender': instance.gender,
       'language': instance.language,
@@ -89,7 +89,7 @@ Author _$AuthorFromJson(Map<String, dynamic> json) => Author(
       type: json['type'] as String?,
       profilePic: json['profilePic'] as String?,
       isDelete: json['isDelete'] as bool?,
-      iV: json['__v'] as int?,
+      iV: json['iV'] as int?,
       phone: json['phone'] as String?,
     );
 
@@ -102,7 +102,7 @@ Map<String, dynamic> _$AuthorToJson(Author instance) => <String, dynamic>{
       'type': instance.type,
       'profilePic': instance.profilePic,
       'isDelete': instance.isDelete,
-      '__vC': instance.iV,
+      'iV': instance.iV,
       'phone': instance.phone,
     };
 

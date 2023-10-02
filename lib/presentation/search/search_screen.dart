@@ -55,9 +55,6 @@ class ScreenSearch extends StatelessWidget {
                         child: state.searchCastingCallList != null
                             ? ListView.builder(
                                 itemBuilder: (BuildContext context, int index) {
-                                  bool isBookmarked = userState.bookmark!
-                                      .contains(state
-                                          .searchCastingCallList![index].sId);
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.push(
@@ -66,38 +63,33 @@ class ScreenSearch extends StatelessWidget {
                                             builder: (BuildContext context) {
                                           return ScreenCastingCall(
                                             index: index,
-                                            isBookmarked: isBookmarked,
                                           );
                                         }),
                                       );
                                     },
                                     child: castingcallCard(
-                                        context: context,
-                                        title: state
-                                            .searchCastingCallList![index]
-                                            .title,
-                                        roles: state
-                                            .searchCastingCallList![index]
-                                            .roles,
-                                        author: state
-                                            .searchCastingCallList![index]
-                                            .author!
-                                            .name,
-                                        type: state
-                                            .searchCastingCallList![index]
-                                            .projectType,
-                                        imageUrl:
-                                            'https://app.nex-gen.shop/${state.searchCastingCallList![index].image}',
-                                        language: state
-                                                .searchCastingCallList![index]
-                                                .language!
-                                                .isEmpty
-                                            ? 'not given'
-                                            : state
-                                                .searchCastingCallList![index]
-                                                .language![0]
-                                                .toString(),
-                                        isBookmarked: isBookmarked),
+                                      context: context,
+                                      title: state
+                                          .searchCastingCallList![index].title,
+                                      roles: state
+                                          .searchCastingCallList![index].roles,
+                                      author: state
+                                          .searchCastingCallList![index]
+                                          .author!
+                                          .name,
+                                      type: state.searchCastingCallList![index]
+                                          .projectType,
+                                      imageUrl:
+                                          'https://app.nex-gen.shop/${state.searchCastingCallList![index].image}',
+                                      language: state
+                                              .searchCastingCallList![index]
+                                              .language!
+                                              .isEmpty
+                                          ? 'not given'
+                                          : state.searchCastingCallList![index]
+                                              .language![0]
+                                              .toString(),
+                                    ),
                                   );
                                 },
                                 itemCount: state.searchCastingCallList!.length,

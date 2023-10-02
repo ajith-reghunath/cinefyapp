@@ -154,10 +154,6 @@ class ScreenHome extends StatelessWidget {
                                             builder: (BuildContext context) {
                                           return ScreenCastingCall(
                                             index: index,
-                                            isBookmarked: userState.bookmark!
-                                                .contains(castingCallstate
-                                                    .castingCallList![index]
-                                                    .sId),
                                           );
                                         }),
                                       );
@@ -186,9 +182,6 @@ class ScreenHome extends StatelessWidget {
                                                 .castingCallList![index]
                                                 .language![0]
                                                 .toString(),
-                                        isBookmarked: userState.bookmark!
-                                            .contains(castingCallstate
-                                                .castingCallList![index].sId),
                                         time: TimeDisplay().getTime(castingCallstate
                                             .castingCallList![index]
                                             .createdAt!),

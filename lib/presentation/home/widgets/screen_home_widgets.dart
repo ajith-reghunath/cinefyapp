@@ -1,4 +1,5 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
+import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_state.dart';
@@ -78,7 +79,6 @@ Widget recommended(double width, List<int> recommended) {
                         itemCount: recommended.length,
                         itemBuilder: (BuildContext context, int num) {
                           int index = recommended.length - (num + 1);
-                          bool isBookmarked = false;
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -87,7 +87,6 @@ Widget recommended(double width, List<int> recommended) {
                                     builder: (BuildContext context) {
                                   return ScreenCastingCall(
                                     index: recommended[index],
-                                    isBookmarked: isBookmarked,
                                   );
                                 }),
                               );
@@ -120,6 +119,8 @@ Widget recommended(double width, List<int> recommended) {
                               time: TimeDisplay().getTime(castingCallstate
                                   .castingCallList![recommended[index]]
                                   .createdAt!),
+                              postID: castingCallstate
+                                      .castingCallList![recommended[index]].sId
                             ),
                           );
                         },
@@ -162,8 +163,8 @@ Future<dynamic> options(BuildContext context1) {
       builder: (BuildContext context) {
         return BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
-            return BlocBuilder<SignUpBloc, SignUpState>(
-              builder: (context, signUpState) {
+            return BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
+              builder: (context, bookmarkState) {
                 return BlocBuilder<UserBloc, UserState>(
                   builder: (context, userState) {
                     return SizedBox(
@@ -212,8 +213,7 @@ Future<dynamic> options(BuildContext context1) {
                             ),
                             TextButton(
                               onPressed: () {
-                                // print(signUpState.signUpResponse!.body
-                                //     .toString());
+                                print(bookmarkState.bookmarkedList.toString());
                               },
                               child: const Text(
                                 'Terms and Conditions',

@@ -1,13 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'created_casting_call_model.dart';
+part of 'bookmarked_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreatedCastingCall _$CreatedCastingCallFromJson(Map<String, dynamic> json) =>
-    CreatedCastingCall(
+UserBookMarked _$UserBookMarkedFromJson(Map<String, dynamic> json) =>
+    UserBookMarked(
+      message: json['message'] as String?,
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$UserBookMarkedToJson(UserBookMarked instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'data': instance.data,
+    };
+
+Data _$DataFromJson(Map<String, dynamic> json) => Data(
       sId: json['_id'] as String?,
       title: json['title'] as String?,
       subtitle: json['subtitle'] as String?,
@@ -35,8 +48,7 @@ CreatedCastingCall _$CreatedCastingCallFromJson(Map<String, dynamic> json) =>
       valid: json['valid'] as bool?,
     );
 
-Map<String, dynamic> _$CreatedCastingCallToJson(CreatedCastingCall instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       '_id': instance.sId,
       'title': instance.title,
       'subtitle': instance.subtitle,
@@ -60,9 +72,7 @@ Map<String, dynamic> _$CreatedCastingCallToJson(CreatedCastingCall instance) =>
     };
 
 Applicants _$ApplicantsFromJson(Map<String, dynamic> json) => Applicants(
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+      user: json['user'] as String?,
       status: json['status'] as String?,
       sId: json['_id'] as String?,
     );
@@ -72,18 +82,4 @@ Map<String, dynamic> _$ApplicantsToJson(Applicants instance) =>
       'user': instance.user,
       'status': instance.status,
       '_id': instance.sId,
-    };
-
-User _$UserFromJson(Map<String, dynamic> json) => User(
-      sId: json['_id'] as String?,
-      name: json['name'] as String?,
-      email: json['email'] as String?,
-      profilePic: json['profilePic'] as String?,
-    );
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      '_id': instance.sId,
-      'name': instance.name,
-      'email': instance.email,
-      'profilePic': instance.profilePic,
     };

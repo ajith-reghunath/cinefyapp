@@ -1,3 +1,4 @@
+import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/Option_Bloc/option_bloc.dart';
 import 'package:cinefy/application/artist_profile_bloc/artist_profile_bloc.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => CreateCcBloc()),
           BlocProvider(create: (context) => UiBloc()),
           BlocProvider(create: (context) => TimerCubit()),
+          BlocProvider(create: (context) => BookmarkBlocBloc()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

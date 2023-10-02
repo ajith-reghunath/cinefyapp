@@ -79,7 +79,6 @@ class ScreenApplied extends StatelessWidget {
                                     return ScreenCastingCall(
                                       index:
                                           appliedCastingCallList[index].index!,
-                                      isBookmarked: isBookmarked,
                                     );
                                   }),
                                 );

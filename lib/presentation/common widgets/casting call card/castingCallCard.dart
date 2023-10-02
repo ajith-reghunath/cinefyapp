@@ -1,5 +1,6 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
 import 'package:cinefy/application/bloc_user/user_event.dart';
+import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,6 @@ Widget castingcallCard(
     String? type,
     String? imageUrl,
     String? language,
-    bool? isBookmarked,
     String? time,
     String? postID}) {
   final width = MediaQuery.of(context!).size.width;
@@ -40,7 +40,7 @@ Widget castingcallCard(
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
-            section3(roles!, title!, width, isBookmarked!,postID!),
+            section3(roles!, title!, width, postID!),
             sizedBoxH10(),
             section4(type!, language!)
           ],
@@ -77,44 +77,59 @@ Widget section2(double width, String? imageUrl) {
   );
 }
 
-Widget section3(
-    List<String> roles, String title, double width, bool isBookmarked, String postID) {
+Widget section3(List<String> roles, String title, double width, String postID) {
   String joinedString = joinStrings(roles);
   return BlocBuilder<UserBloc, UserState>(
-    builder: (context, state) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+    builder: (context, userState) {
+      return BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
+        builder: (context, state) {
+          return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: width * 0.75,
-                child: Text(
-                  joinedString,
-                  softWrap: true,
-                  style: const TextStyle(
-                      fontFamily: 'PoppinsMedium',
-                      fontSize: fontSize4,
-                      color: Color(0xff000000)),
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: width * 0.75,
+                    child: Text(
+                      joinedString,
+                      softWrap: true,
+                      style: const TextStyle(
+                          fontFamily: 'PoppinsMedium',
+                          fontSize: fontSize4,
+                          color: Color(0xff000000)),
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: const TextStyle(fontSize: fontSize3, color: shade2),
+                  ),
+                ],
               ),
-              Text(
-                title,
-                style: const TextStyle(fontSize: fontSize3, color: shade2),
-              ),
+              IconButton(
+                  onPressed: () {
+                    print(state.bookmarkedList.contains(postID));
+                    if (state.bookmarkedList.contains(postID)) {
+                      state.bookmarkedList.remove(postID);
+                      state.userBookMarked!.data!.removeWhere((data) => data.sId == postID);
+                    } else {
+                      state.bookmarkedList.add(postID);
+                    }
+                    context.read<BookmarkBlocBloc>().add(RefreshBookmark());
+                    //called bookmark api
+                    // context.read<UserBloc>().add(Bookmark(postID: postID));
+                    context.read<BookmarkBlocBloc>().add(
+                        BookmarkPost(postID: postID, userID: userState.sId!));
+                    // context.read<BookmarkBlocBloc>().add(LoadBookmarks());
+                  },
+                  icon: Icon(state.bookmarkedList.contains(postID)
+                      ? Icons.bookmark
+                      : Icons.bookmark_outline))
             ],
-          ),
-          IconButton(
-              onPressed: () {
-                context.read<UserBloc>().add(Bookmark(postID: postID));
-                context.read<UserBloc>().add(RefreshUserState());
-              },
-              icon:
-                  Icon(isBookmarked ? Icons.bookmark : Icons.bookmark_outline))
-        ],
+          );
+        },
       );
     },
   );
@@ -146,18 +161,17 @@ String joinStrings(List<String> strings) {
   return strings.join(', ');
 }
 
-Widget recommendedCastingcallCard({
-  BuildContext? context,
-  String? author,
-  List<String>? roles,
-  String? title,
-  String? type,
-  String? imageUrl,
-  String? language,
-  required double width,
-  String? time,
-}) {
-  bool isBookmarked = true;
+Widget recommendedCastingcallCard(
+    {BuildContext? context,
+    String? author,
+    List<String>? roles,
+    String? title,
+    String? type,
+    String? imageUrl,
+    String? language,
+    required double width,
+    String? time,
+    String? postID}) {
   return Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
@@ -179,7 +193,7 @@ Widget recommendedCastingcallCard({
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
-            section3ForRecommended(roles!, title!, width, isBookmarked),
+            section3ForRecommended(roles!, title!, width, postID!),
             sizedBoxH10(),
             section4(type!, language!)
           ],
@@ -190,36 +204,58 @@ Widget recommendedCastingcallCard({
 }
 
 Widget section3ForRecommended(
-    List<String> roles, String title, double width, bool isBookMarked) {
+    List<String> roles, String title, double width, String postID) {
   String joinedString = joinStrings(roles);
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: width * 0.75,
-            child: Text(
-              joinedString,
-              softWrap: true,
-              style: const TextStyle(
-                  fontFamily: 'PoppinsMedium',
-                  fontSize: fontSize4,
-                  color: Color(0xff000000),
-                  overflow: TextOverflow.ellipsis),
-            ),
-          ),
-          Text(
-            title,
-            style: TextStyle(fontSize: fontSize3, color: shade2),
-          ),
-        ],
-      ),
-      Icon(isBookMarked ? Icons.bookmark : Icons.bookmark_outline)
-    ],
+  return BlocBuilder<UserBloc, UserState>(
+    builder: (context, userState) {
+      return BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
+        builder: (context, state) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: width * 0.75,
+                    child: Text(
+                      joinedString,
+                      softWrap: true,
+                      style: const TextStyle(
+                          fontFamily: 'PoppinsMedium',
+                          fontSize: fontSize4,
+                          color: Color(0xff000000),
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: fontSize3, color: shade2),
+                  ),
+                ],
+              ),
+              IconButton(
+                  onPressed: () {
+                    print(state.bookmarkedList.contains(postID));
+                    if (state.bookmarkedList.contains(postID)) {
+                      state.bookmarkedList.remove(postID);
+                    } else {
+                      state.bookmarkedList.add(postID);
+                    }
+
+                    context.read<UserBloc>().add(Bookmark(postID: postID));
+                    context.read<BookmarkBlocBloc>().add(RefreshBookmark());
+                  },
+                  icon: Icon(state.bookmarkedList.contains(postID)
+                      ? Icons.bookmark
+                      : Icons.bookmark_outline))
+            ],
+          );
+        },
+      );
+    },
   );
 }
 
@@ -258,7 +294,7 @@ Widget appliedCastingcallCard(
             sizedBoxH10(),
             section2(width, imageUrl),
             sizedBoxH10(),
-            section3(roles!, title!, width, isBookmarked!,postID!),
+            section3(roles!, title!, width, postID!),
             sizedBoxH10(),
             section4(type!, language!),
             sizedBoxH10(),

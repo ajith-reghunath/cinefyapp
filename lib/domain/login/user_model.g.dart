@@ -31,7 +31,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       password: json['password'] as String?,
       type: json['type'] as String?,
       isDelete: json['isDelete'] as bool?,
-      iV: json['__v'] as int?,
+      iV: json['iV'] as int?,
       bookmarks: (json['bookmarks'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -46,7 +46,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'password': instance.password,
       'type': instance.type,
       'isDelete': instance.isDelete,
-      '__v': instance.iV,
+      'iV': instance.iV,
       'bookmarks': instance.bookmarks,
     };
 

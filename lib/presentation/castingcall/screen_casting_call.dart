@@ -12,9 +12,8 @@ import '../common widgets/casting call card/castingCallCard.dart';
 // ignore: must_be_immutable
 class ScreenCastingCall extends StatelessWidget {
   ScreenCastingCall(
-      {super.key, required this.index, required this.isBookmarked});
+      {super.key, required this.index});
   int index;
-  bool isBookmarked;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,6 @@ class ScreenCastingCall extends StatelessWidget {
                             : castingCallstate
                                 .castingCallList![index].language![0]
                                 .toString(),
-                        isBookmarked: isBookmarked,
                         time: TimeDisplay().getTime(castingCallstate
                             .castingCallList![index].createdAt!),
                             postID: castingCallstate.castingCallList![index].sId),
