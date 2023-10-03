@@ -92,8 +92,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SaveUser>((event, emit) => emit(UserState(name: state.name)));
 
     on<IsApplied>((event, emit) {
-      // state.isApplied = true;
-      if (event.applicantsList != null) {
+      if (event.applicantsList!.isNotEmpty) {
         for (int i = 0; i < event.applicantsList!.length; i++) {
           if (event.applicantsList![i].user == state.sId) {
             state.isApplied = true;
@@ -103,7 +102,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           }
         }
       }
-      print(state.isApplied);
+      else{
+        state.isApplied = false;
+      }
     });
 
     on<RecommendedCastingCalls>((event, emit) async {
@@ -121,10 +122,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    on<Bookmark>((event, emit) {
-      addBookmark(state.sId!, event.postID!);
-    });
-
     on<UpdateAppliedList>((event, emit) {
       if (event.castingCall!.applicants != null) {
         print(state.sId);
@@ -138,29 +135,29 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    on<RefreshUserState>((event, emit){
+    on<RefreshUserState>((event, emit) {
       emit(UserState(
-          sId: state.sId,
-          name: state.name,
-          email: state.email,
-          phone: state.phone,
-          password: state.password,
-          type: state.type,
-          isDelete: state.isDelete,
-          iV: state.iV,
-          roles: state.roles,
-          skills: state.skills,
-          certifications: state.certifications,
-          languages: state.languages,
-          workExp: state.workExp,
-          education: state.education,
-          age: state.age,
-          bio: state.bio,
-          gender: state.gender,
-          intro: state.intro,
-          photo: state.photo,
-          bookmark: state.bookmark,
-        ));
+        sId: state.sId,
+        name: state.name,
+        email: state.email,
+        phone: state.phone,
+        password: state.password,
+        type: state.type,
+        isDelete: state.isDelete,
+        iV: state.iV,
+        roles: state.roles,
+        skills: state.skills,
+        certifications: state.certifications,
+        languages: state.languages,
+        workExp: state.workExp,
+        education: state.education,
+        age: state.age,
+        bio: state.bio,
+        gender: state.gender,
+        intro: state.intro,
+        photo: state.photo,
+        bookmark: state.bookmark,
+      ));
     });
   }
 
@@ -180,12 +177,5 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       print(data['message']);
     }
     return response;
-  }
-
-  addBookmark(String userID, String postID) async {
-    final urlEndPoint = '/bookmark?id=$postID&user=$userID';
-    final url = apiBase + urlEndPoint;
-    final response = await http.patch(Uri.parse(url));
-    print('bookmarked status code : ${response.statusCode}');
   }
 }

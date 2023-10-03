@@ -1,9 +1,9 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
 import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
+import 'package:cinefy/application/chat_bloc/chat_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_state.dart';
-import 'package:cinefy/application/sign_up_bloc/sign_up_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/login_bloc/login_event.dart';
@@ -92,36 +92,35 @@ Widget recommended(double width, List<int> recommended) {
                               );
                             },
                             child: recommendedCastingcallCard(
-                              width: width * 0.8,
-                              context: context,
-                              title: castingCallstate
-                                  .castingCallList![recommended[index]].title,
-                              roles: castingCallstate
-                                  .castingCallList![recommended[index]].roles,
-                              author: castingCallstate
-                                  .castingCallList![recommended[index]]
-                                  .author!
-                                  .name,
-                              type: castingCallstate
-                                  .castingCallList![recommended[index]]
-                                  .projectType,
-                              imageUrl:
-                                  'https://app.nex-gen.shop/${castingCallstate.castingCallList![recommended[index]].image}',
-                              language: castingCallstate
-                                      .castingCallList![recommended[index]]
-                                      .language!
-                                      .isEmpty
-                                  ? 'not given'
-                                  : castingCallstate
-                                      .castingCallList![recommended[index]]
-                                      .language![0]
-                                      .toString(),
-                              time: TimeDisplay().getTime(castingCallstate
-                                  .castingCallList![recommended[index]]
-                                  .createdAt!),
-                              postID: castingCallstate
-                                      .castingCallList![recommended[index]].sId
-                            ),
+                                width: width * 0.8,
+                                context: context,
+                                title: castingCallstate
+                                    .castingCallList![recommended[index]].title,
+                                roles: castingCallstate
+                                    .castingCallList![recommended[index]].roles,
+                                author: castingCallstate
+                                    .castingCallList![recommended[index]]
+                                    .author!
+                                    .name,
+                                type: castingCallstate
+                                    .castingCallList![recommended[index]]
+                                    .projectType,
+                                imageUrl:
+                                    'https://app.nex-gen.shop/${castingCallstate.castingCallList![recommended[index]].image}',
+                                language: castingCallstate
+                                        .castingCallList![recommended[index]]
+                                        .language!
+                                        .isEmpty
+                                    ? 'not given'
+                                    : castingCallstate
+                                        .castingCallList![recommended[index]]
+                                        .language![0]
+                                        .toString(),
+                                time: TimeDisplay().getTime(castingCallstate
+                                    .castingCallList![recommended[index]]
+                                    .createdAt!),
+                                postID: castingCallstate
+                                    .castingCallList![recommended[index]].sId),
                           );
                         },
                       ),
@@ -163,8 +162,8 @@ Future<dynamic> options(BuildContext context1) {
       builder: (BuildContext context) {
         return BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
-            return BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
-              builder: (context, bookmarkState) {
+            return BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, chatState) {
                 return BlocBuilder<UserBloc, UserState>(
                   builder: (context, userState) {
                     return SizedBox(
@@ -213,7 +212,7 @@ Future<dynamic> options(BuildContext context1) {
                             ),
                             TextButton(
                               onPressed: () {
-                                print(bookmarkState.bookmarkedList.toString());
+                                print(chatState.getMessage!.lastMsg);
                               },
                               child: const Text(
                                 'Terms and Conditions',

@@ -30,11 +30,6 @@ class RecommendedCastingCalls extends UserEvent {
   RecommendedCastingCalls({this.castingCallList});
 }
 
-class Bookmark extends UserEvent {
-  String? postID;
-  Bookmark({this.postID});
-}
-
 class UpdateAppliedList extends UserEvent {
   CastingCallModel? castingCall;
   UpdateAppliedList({this.castingCall});

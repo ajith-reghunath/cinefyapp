@@ -23,7 +23,7 @@ class ScreenCastingCall extends StatelessWidget {
         builder: (context, uiState) {
           return BlocBuilder<UserBloc, UserState>(
             builder: (context, userState) {
-              print('user id is ${userState.sId}');
+              print('applicants list ${castingCallstate.castingCallList![index].applicants.toString()}');
               context.read<UserBloc>().add(IsApplied(
                   applicantsList:
                       castingCallstate.castingCallList![index].applicants,

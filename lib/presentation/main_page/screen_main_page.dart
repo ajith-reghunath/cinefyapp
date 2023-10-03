@@ -10,6 +10,7 @@ import 'package:cinefy/presentation/profile/screen_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/colors.dart';
+import '../chat/chat_screen.dart';
 
 // ignore: must_be_immutable
 class ScreenMainPage extends StatelessWidget {

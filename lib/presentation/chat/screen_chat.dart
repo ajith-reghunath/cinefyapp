@@ -1,15 +1,14 @@
 import 'dart:convert';
 
-import 'package:cinefy/domain/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen1 extends StatefulWidget {
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatScreen1State createState() => _ChatScreen1State();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreen1State extends State<ChatScreen1> {
   IO.Socket? socket;
   TextEditingController messageController = TextEditingController();
   List<String> messages = [];

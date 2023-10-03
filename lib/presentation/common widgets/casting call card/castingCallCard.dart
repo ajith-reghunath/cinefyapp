@@ -1,5 +1,4 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
-import 'package:cinefy/application/bloc_user/user_event.dart';
 import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +112,8 @@ Widget section3(List<String> roles, String title, double width, String postID) {
                     print(state.bookmarkedList.contains(postID));
                     if (state.bookmarkedList.contains(postID)) {
                       state.bookmarkedList.remove(postID);
-                      state.userBookMarked!.data!.removeWhere((data) => data.sId == postID);
+                      state.userBookMarked!.data!
+                          .removeWhere((data) => data.sId == postID);
                     } else {
                       state.bookmarkedList.add(postID);
                     }
@@ -241,12 +241,17 @@ Widget section3ForRecommended(
                     print(state.bookmarkedList.contains(postID));
                     if (state.bookmarkedList.contains(postID)) {
                       state.bookmarkedList.remove(postID);
+                      state.userBookMarked!.data!
+                          .removeWhere((data) => data.sId == postID);
                     } else {
                       state.bookmarkedList.add(postID);
                     }
-
-                    context.read<UserBloc>().add(Bookmark(postID: postID));
                     context.read<BookmarkBlocBloc>().add(RefreshBookmark());
+                    //called bookmark api
+                    // context.read<UserBloc>().add(Bookmark(postID: postID));
+                    context.read<BookmarkBlocBloc>().add(
+                        BookmarkPost(postID: postID, userID: userState.sId!));
+                    // context.read<BookmarkBlocBloc>().add(LoadBookmarks());
                   },
                   icon: Icon(state.bookmarkedList.contains(postID)
                       ? Icons.bookmark
@@ -267,7 +272,6 @@ Widget appliedCastingcallCard(
     String? type,
     String? imageUrl,
     String? language,
-    bool? isBookmarked,
     String? castingStatus,
     String? time,
     String? postID}) {

@@ -62,7 +62,7 @@ class ScreenBookmark extends StatelessWidget {
                     ),
                   ),
                   child: Expanded(
-                    child: ListView.builder(
+                    child: state.bookmarkedList.isEmpty ? const Center(child: Text('No bookmarks to show')) : ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {

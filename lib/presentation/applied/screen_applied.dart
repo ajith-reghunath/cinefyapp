@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/colors.dart';
 import '../../domain/casting_call/casting_call_model.dart';
+import '../../domain/time_ago/time_display.dart';
 import '../castingcall/screen_casting_call.dart';
 
 // ignore: must_be_immutable
@@ -68,9 +69,7 @@ class ScreenApplied extends StatelessWidget {
                       child: Expanded(
                         child: ListView.builder(
                           itemBuilder: (BuildContext context, int index) {
-                            bool isBookmarked = userState.bookmark!
-                                .contains(appliedCastingCallList[index].sId);
-                            return GestureDetector(
+                            return GestureDetector(   
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -92,6 +91,9 @@ class ScreenApplied extends StatelessWidget {
                                       .name,
                                   type:
                                       appliedCastingCallList[index].projectType,
+                                  time: TimeDisplay().getTime(appliedCastingCallList[index]
+                                            .createdAt!),
+                                  postID: appliedCastingCallList[index].sId,
                                   imageUrl:
                                       'https://app.nex-gen.shop/${appliedCastingCallList[index].image}',
                                   language: appliedCastingCallList[index]
@@ -101,7 +103,6 @@ class ScreenApplied extends StatelessWidget {
                                       : appliedCastingCallList[index]
                                           .language![0]
                                           .toString(),
-                                  isBookmarked: isBookmarked,
                                   castingStatus: appliedCastingCallList[index]
                                       .castingCallStatus),
                             );
