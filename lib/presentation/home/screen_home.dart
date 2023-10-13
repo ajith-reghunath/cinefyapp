@@ -10,6 +10,7 @@ import 'package:cinefy/core/colors.dart';
 import 'package:cinefy/presentation/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 import '../../application/bloc_user/user_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
 import '../../core/constants.dart';
@@ -80,7 +81,10 @@ class ScreenHome extends StatelessWidget {
                                   children: [
                                     IconButton(
                                         onPressed: () {
-                                          options(context);
+                                          final uri = Uri.parse(
+                                              'https://app.nex-gen.shop/');
+                                          final socket = WebSocket(uri);
+                                          options(context,socket);
                                         },
                                         icon: const Icon(
                                           Icons.menu,
@@ -146,7 +150,7 @@ class ScreenHome extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () {
                                       print(castingCallstate
-                                                .castingCallList![index].sId);
+                                          .castingCallList![index].sId);
                                       print(userState.bookmark!.length);
                                       Navigator.push(
                                         context,
@@ -182,9 +186,10 @@ class ScreenHome extends StatelessWidget {
                                                 .castingCallList![index]
                                                 .language![0]
                                                 .toString(),
-                                        time: TimeDisplay().getTime(castingCallstate
-                                            .castingCallList![index]
-                                            .createdAt!),
+                                        time: TimeDisplay().getTime(
+                                            castingCallstate
+                                                .castingCallList![index]
+                                                .createdAt!),
                                         postID: castingCallstate
                                             .castingCallList![index].sId),
                                   ),

@@ -87,7 +87,7 @@ class BaseClient {
     }
   }
 
-  Future<dynamic> getMessage({String ?fromID, String ?toID}) async {
+  Future<dynamic> getMessage({String? fromID, String? toID}) async {
     String urlEndPoint = 'messages/getmsg';
     final url = apiBase + urlEndPoint;
     var uri = Uri.parse(url);
@@ -108,14 +108,40 @@ class BaseClient {
     }
   }
 
-  Future<dynamic> getChats() async {
-    String urlEndPoint = 'messages/getChats?id=64e9818923a6a879c7b4e484';
+  Future<dynamic> getChats(String id) async {
+    String urlEndPoint = 'messages/getChats?id=$id';
     final url = apiBase + urlEndPoint;
     var uri = Uri.parse(url);
     try {
       final response = await http.get(uri);
       return _processResponse(response);
     } catch (e) {
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
+      print('Handled Error: $errorMessage');
+      logInMessage = errorMessage;
+    }
+  }
+
+  Future<dynamic> addMessagetoDB({String ?fromID, String ?toID, String ?message}) async {
+    String urlEndPoint = 'messages/addmsg';
+    final url = apiBase + urlEndPoint;
+    var uri = Uri.parse(url);
+    try {
+      final response = await http.post(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode({
+          'from': fromID,
+        'to': toID,
+        'message': message,
+        'time': DateTime.now().toString()
+        }),
+      );
+      return _processResponse(response);
+    } 
+    catch (e) {
       final errorMessage = await ExceptionHandlers().getExceptionString(e);
       print('Handled Error: $errorMessage');
       logInMessage = errorMessage;

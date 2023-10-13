@@ -1,3 +1,5 @@
+
+
 import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/Option_Bloc/option_bloc.dart';
@@ -24,12 +26,27 @@ Future<void> main() async {
     Hive.registerAdapter(CurrentUserModelAdapter());
   }
 
+  
+
+
+  // IO.Socket? socket;
+  // socket = IO.io('https://app.nex-gen.shop/', <String, dynamic>{
+  //   'transports': ['websocket'],
+  //   'autoConnect': false,
+  // });
+
+  // socket.connect();
+  // socket.emit('add-user', json.encode('64e9818923a6a879c7b4e484'));
+  // socket.on('msg-recieve', (data) {
+  //   ChatBloc().addResponse;
+  //   print('vvvvvvv msg recieve worked vvvvvvv');
+  // });
+
   runApp(const MyApp());
 
   // Directory directory = await pathProvider.getApplicationDocumentsDirectory();
   // Hive.init(directory.path);
   // Hive.registerAdapter(CurrentUserAdapter());
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,88 +1,83 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+// ignore: must_be_immutable
 class ChatScreen1 extends StatefulWidget {
+  ChatScreen1({super.key, required this.userID, required this.name, required this.senderID});
+  String userID;
+  String name;
+  String senderID;
   @override
   _ChatScreen1State createState() => _ChatScreen1State();
 }
 
 class _ChatScreen1State extends State<ChatScreen1> {
-  IO.Socket? socket;
+  late IO.Socket socket;
   TextEditingController messageController = TextEditingController();
-  List<String> messages = [];
+  String message = 'No message';
+
+  sendMessage() {
+    socket.emit('send-msg', {
+      'from': widget.userID,
+      'to': widget.senderID,
+      'message': 'Hello Manoharan',
+      'time': DateTime.now().toString()
+    });
+  }
+
+  connectSocket() {
+    socket.onConnect((data) => print('Connection established'));
+    socket.onConnectError((data) => print('Connect Error: $data'));
+    socket.onDisconnect((data) => print('Socket.IO server disconnected'));
+    socket.on('msg-recieve', (data) {
+      print('msg-recieve worked');
+      setState(() {
+        message = data.toString();
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    connectToServer();
-  }
-
-  void connectToServer() async {
     socket = IO.io('https://app.nex-gen.shop/', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });
 
-    if (socket != null) {
-      socket!.connect();
-      socket!.emit('add-user', json.encode('64e9818923a6a879c7b4e484'));
-      socket!.on('msg-recieve', (data) {
-        setState(() {
-          messages.add(data);
-        });
-      });
-    } else {
-      print('socket is empty');
-    }
-  }
-
-  void sendMessage() {
-    String message = messageController.text.trim();
-    if (socket != null) {
-      socket!.emit('send-msg', {
-        'from': '64e9818923a6a879c7b4e484',
-        'to': '64be578400ae57be46dfbf86',
-        'message': 'hai mahan',
-        'time': '2023-09-30T12:10:39.179Z'
-      });
-    }
-    setState(() {
-      messages.add(message);
-    });
+    socket.connect();
+    socket.emit('add-user', widget.userID);
+    print('socket 1 : ${socket.id}');
+    connectSocket();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Socket.IO Chat'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
+        title: const Text('Flutter Socket.IO Chat'),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(messages[index]),
-                );
-              },
-            ),
-          ),
+          Text('Hi ${widget.name} to ${widget.senderID}'),
+          Text(message),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: messageController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Type your message here...',
                   ),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: sendMessage,
               ),
             ],

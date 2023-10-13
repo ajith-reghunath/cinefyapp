@@ -489,7 +489,7 @@ Widget enterTitle() {
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: TextFormField(
                   style: const TextStyle(fontSize: fontSize2),
-                  keyboardType: TextInputType.name,
+                  keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,

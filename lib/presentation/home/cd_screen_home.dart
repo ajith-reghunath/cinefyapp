@@ -10,6 +10,7 @@ import 'package:cinefy/presentation/home/widgets/screen_home_widgets.dart';
 import 'package:cinefy/core/colors.dart';
 import 'package:cinefy/presentation/search/search_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 import '../../application/bloc_user/user_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
 import '../../core/constants.dart';
@@ -72,7 +73,10 @@ class ScreenCdHome extends StatelessWidget {
                                 children: [
                                   IconButton(
                                       onPressed: () {
-                                        options(context);
+                                        final uri = Uri.parse(
+                                              'https://app.nex-gen.shop');
+                                          final socket = WebSocket(uri);
+                                        options(context,socket);
                                       },
                                       icon: const Icon(
                                         Icons.menu,

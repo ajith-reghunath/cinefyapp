@@ -1,11 +1,11 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
-import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/chat_bloc/chat_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 import '../../../application/login_bloc/login_event.dart';
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
@@ -150,7 +150,7 @@ Widget recentCastingCall() {
   );
 }
 
-Future<dynamic> options(BuildContext context1) {
+Future<dynamic> options(BuildContext context1, WebSocket socket) {
   double height = MediaQuery.of(context1).size.height;
   double width = MediaQuery.of(context1).size.width;
   return showModalBottomSheet(
@@ -212,7 +212,8 @@ Future<dynamic> options(BuildContext context1) {
                             ),
                             TextButton(
                               onPressed: () {
-                                print(chatState.getMessage!.lastMsg);
+                                TimeDisplay()
+                                    .displayDate('2023-10-11T10:14:20.082Z');
                               },
                               child: const Text(
                                 'Terms and Conditions',
@@ -222,7 +223,7 @@ Future<dynamic> options(BuildContext context1) {
                             ),
                             TextButton(
                               onPressed: () {
-                                print(userState.name);
+                                print(DateTime.now().toString());
                               },
                               child: const Text(
                                 'About Us',
