@@ -7,9 +7,9 @@ class CastingCallState {
   List<ccm.CastingCallModel> appliedCastingCallList = [];
   List<ccm.CastingCallModel>? searchCastingCallList;
 
-  List<ccm.Applicants> selectedApplicants = [];
-  List<ccm.Applicants> rejectedApplicants = [];
-  List<ccm.Applicants> unreviewedApplicants = [];
+  List<Applicants> selectedApplicants = [];
+  List<Applicants> rejectedApplicants = [];
+  List<Applicants> unreviewedApplicants = [];
 
   CastingCallState(
       {this.castingCallList,

@@ -1,3 +1,4 @@
+import 'package:cinefy/presentation/cd_interface/cd_interface.dart';
 import 'package:cinefy/presentation/home/widgets/cd_not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
@@ -35,7 +36,6 @@ class ScreenCdHome extends StatelessWidget {
                 return BlocBuilder<UserBloc, UserState>(
                   builder: (context, userState) {
                     if (call == 1) {
-                      print('Call : $call');
                       call = 0;
                     }
 
@@ -74,9 +74,9 @@ class ScreenCdHome extends StatelessWidget {
                                   IconButton(
                                       onPressed: () {
                                         final uri = Uri.parse(
-                                              'https://app.nex-gen.shop');
-                                          final socket = WebSocket(uri);
-                                        options(context,socket);
+                                            'https://app.nex-gen.shop');
+                                        final socket = WebSocket(uri);
+                                        options(context, socket);
                                       },
                                       icon: const Icon(
                                         Icons.menu,
@@ -123,7 +123,9 @@ class ScreenCdHome extends StatelessWidget {
                                       children: [
                                         sizedBoxH20(),
                                         topSection(
-                                            userState.name ?? 'casting director', width)
+                                            userState.name ??
+                                                'casting director',
+                                            width)
                                       ],
                                     )
                                   : CdNotFoundScreen(
@@ -139,19 +141,19 @@ class ScreenCdHome extends StatelessWidget {
                                   (num + 1);
                               return GestureDetector(
                                   onTap: () {
-                                    // context.read<CastingCallBloc>().add(
-                                    //     AddToSortedList(
-                                    //         applicants: castingCallstate
-                                    //             .createdCastingCallList![index]
-                                    //             .applicants));
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder:
-                                    //       (BuildContext context) {
-                                    //     return CastingDirectorInterface(
-                                    //         index: index);
-                                    //   }),
-                                    // );
+                                    context.read<CastingCallBloc>().add(
+                                        AddToSortedList(
+                                            applicants: castingCallstate
+                                                .createdCastingCallList![index]
+                                                .applicants));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                        return CastingDirectorInterface(
+                                            index: index);
+                                      }),
+                                    );
                                   },
                                   child: cdHomeCastingcallCard(
                                       context: context,

@@ -96,27 +96,27 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           createdCastingCallList: state.createdCastingCallList));
     });
 
-    // on<AddToSortedList>((event, emit) {
-    //   if (event.applicants != null) {
-    //     for (int i = 0; i < event.applicants!.length; i++) {
-    //       if (event.applicants![i].status == 'unreviewed') {
-    //         state.unreviewedApplicants.add(event.applicants![i]);
-    //       } else if (event.applicants![i].status == 'selected') {
-    //         state.selectedApplicants.add(event.applicants![i]);
-    //       } else {
-    //         state.rejectedApplicants.add(event.applicants![i]);
-    //       }
-    //     }
-    //   }
-    //   emit(CastingCallState(
-    //       castingCallList: state.castingCallList,
-    //       appliedCastingCallList: state.appliedCastingCallList,
-    //       searchCastingCallList: state.searchCastingCallList,
-    //       selectedApplicants: state.selectedApplicants,
-    //       rejectedApplicants: state.rejectedApplicants,
-    //       unreviewedApplicants: state.unreviewedApplicants,
-    //       createdCastingCallList: state.createdCastingCallList));
-    // });
+    on<AddToSortedList>((event, emit) {
+      if (event.applicants != null) {
+        for (int i = 0; i < event.applicants!.length; i++) {
+          if (event.applicants![i].status == 'unreviewed') {
+            state.unreviewedApplicants.add(event.applicants![i]);
+          } else if (event.applicants![i].status == 'selected') {
+            state.selectedApplicants.add(event.applicants![i]);
+          } else {
+            state.rejectedApplicants.add(event.applicants![i]);
+          }
+        }
+      }
+      emit(CastingCallState(
+          castingCallList: state.castingCallList,
+          appliedCastingCallList: state.appliedCastingCallList,
+          searchCastingCallList: state.searchCastingCallList,
+          selectedApplicants: state.selectedApplicants,
+          rejectedApplicants: state.rejectedApplicants,
+          unreviewedApplicants: state.unreviewedApplicants,
+          createdCastingCallList: state.createdCastingCallList));
+    });
 
     on<RemoveFromSortedList>((event, emit) {
       emit(CastingCallState(

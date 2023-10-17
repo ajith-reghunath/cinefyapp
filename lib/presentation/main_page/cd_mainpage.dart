@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/colors.dart';
 import '../chat/chat_screen.dart';
-import '../chat/screen_chat.dart';
-import '../chat/test_chat.dart';
 import '../create_cc/screen_cc.dart';
 import '../home/cd_screen_home.dart';
 
