@@ -25,6 +25,7 @@ Widget otpVerificationForm(double width) {
             titleText('OTP Code Verification'),
             sizedBox3(),
             description(),
+            changeMobileNumber(context),
             sizedBox3(),
             _otpVerifyField(),
             sizedBox3(),
@@ -290,41 +291,61 @@ Widget description() {
   );
 }
 
+Widget changeMobileNumber(BuildContext context) {
+  return TextButton(
+      onPressed: () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return const EnterMobileNumberScreen();
+        }));
+      },
+      child: const Text(
+        'change number',
+        style: TextStyle(
+          fontSize: fontSize2,
+          color: accentColor,
+        ),
+      ));
+}
+
 // ignore: must_be_immutable
 class ShowCountDown extends StatelessWidget {
   const ShowCountDown({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimerCubit, TimerState>(
-      builder: (context, state) {
-        if (state is TimerInitial) {
-          return TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return const EnterMobileNumberScreen();
-                }));
-              },
-              child: const Text(
-                'Resend OTP',
-                style: TextStyle(
-                  fontSize: fontSize2,
-                  color: accentColor,
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      builder: (context, signUpState) {
+        return BlocBuilder<TimerCubit, TimerState>(
+          builder: (context, state) {
+            if (state is TimerInitial) {
+              return TextButton(
+                  onPressed: () {
+                    BlocProvider.of<TimerCubit>(context).startTimer(60);
+
+                    context.read<SignUpBloc>().add(GenerateOtpButtonClicked());
+                  },
+                  child: const Text(
+                    'Resend OTP',
+                    style: TextStyle(
+                      fontSize: fontSize2,
+                      color: accentColor,
+                    ),
+                  ));
+            } else if (state is TimerProgress) {
+              return Center(
+                child: Text(
+                  'Resend OTP in ${state.elapsed!} seconds',
+                  style: const TextStyle(
+                    fontSize: fontSize2,
+                    color: shade2,
+                  ),
                 ),
-              ));
-        } else if (state is TimerProgress) {
-          return Center(
-            child: Text(
-              'Resend OTP in ${state.elapsed!} seconds',
-              style: const TextStyle(
-                fontSize: fontSize2,
-                color: shade2,
-              ),
-            ),
-          );
-        }
-        return Container();
+              );
+            }
+            return Container();
+          },
+        );
       },
     );
   }

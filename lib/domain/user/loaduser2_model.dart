@@ -13,6 +13,7 @@ class UserModel2 {
   bool? isDelete;
   int? iV;
   List<String>? bookmarks;
+  String? profilePic;
 
   UserModel2(
       {this.profile,
@@ -24,7 +25,8 @@ class UserModel2 {
       this.type,
       this.isDelete,
       this.iV,
-      this.bookmarks});
+      this.bookmarks,
+      this.profilePic});
 
   factory UserModel2.fromJson(Map<String, dynamic> json) =>
       _$UserModel2FromJson(json);
@@ -63,7 +65,8 @@ class Profile {
       this.roles,
       this.languages});
 
-  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }

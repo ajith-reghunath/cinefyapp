@@ -10,15 +10,36 @@ class CastingCallState {
   List<Applicants> selectedApplicants = [];
   List<Applicants> rejectedApplicants = [];
   List<Applicants> unreviewedApplicants = [];
+  List<Applicants> bookmarkedApplicants = [];
+  List<Applicants> reviewedApplicants = [];
+
+  Map<String, UserModel2> applicants = {};
+
+  String ? profileAddedStatus;
 
   CastingCallState(
       {this.castingCallList,
       this.createdCastingCallList,
       this.statusCode,
       required this.appliedCastingCallList,
-      this.searchCastingCallList, required this.rejectedApplicants, required this.selectedApplicants, required this.unreviewedApplicants});
+      this.searchCastingCallList,
+      this.profileAddedStatus = 'Completed',
+      required this.rejectedApplicants,
+      required this.selectedApplicants,
+      required this.unreviewedApplicants,
+      required this.applicants,
+      required this.bookmarkedApplicants,
+      required this.reviewedApplicants});
 }
 
 class CastingCallInitial extends CastingCallState {
-  CastingCallInitial({required super.appliedCastingCallList, required super.rejectedApplicants, required super.selectedApplicants, required super.unreviewedApplicants});
+  CastingCallInitial(
+      {required super.appliedCastingCallList,
+      required super.rejectedApplicants,
+      required super.selectedApplicants,
+      required super.unreviewedApplicants,
+      required super.applicants,
+      required super.bookmarkedApplicants,
+      required super.reviewedApplicants,
+      });
 }

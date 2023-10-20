@@ -24,3 +24,7 @@ class AddToSortedList extends CastingCallEvent {
 class RemoveFromSortedList extends CastingCallEvent {}
 
 class LoadCreatedCastingCall extends CastingCallEvent{}
+
+class ProfileAddingInitialized extends CastingCallEvent {}
+
+class ProfileAdded extends CastingCallEvent {}

@@ -115,7 +115,7 @@ class ArtistProfileBloc extends Bloc<ArtistProfileEvent, ArtistProfileState> {
       if (response.statusCode == 200) {
         print('successful');
       } else {
-        print(response.statusCode);
+        print('Status code : ${response.statusCode}');
       }
 
       // else {

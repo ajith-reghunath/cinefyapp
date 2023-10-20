@@ -1,14 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
-import 'package:cinefy/core/fontSize.dart';
+import 'package:cinefy/presentation/cd_interface/cd_interface_widgets.dart';
 import 'package:cinefy/presentation/common%20widgets/casting%20call%20card/castingCallCard.dart';
-import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/colors.dart';
-import '../profile_review/screen_review.dart';
+
 
 class CastingDirectorInterface extends StatelessWidget {
   CastingDirectorInterface({super.key, required this.index});
@@ -17,6 +16,7 @@ class CastingDirectorInterface extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    CdInterfaceWidget cdInterfaceWidget = CdInterfaceWidget(width: width,context: context);
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<CastingCallBloc, CastingCallState>(
@@ -27,17 +27,10 @@ class CastingDirectorInterface extends StatelessWidget {
               if (state.selectedApplicants.isEmpty &&
                   state.rejectedApplicants.isEmpty &&
                   state.unreviewedApplicants.isEmpty) {
-                return Column(
-                  children: [
-                    const CircularProgressIndicator(),
-                    TextButton(
-                      child: Text('press me'),
-                      onPressed: () {
-                        print(state.unreviewedApplicants.length);
-                      },
-                    )
-                  ],
-                );
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: accentColor,
+                ));
               } else {
                 return CustomScrollView(
                   slivers: <Widget>[
@@ -79,311 +72,16 @@ class CastingDirectorInterface extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SliverGrid(
-                        delegate: SliverChildListDelegate([
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15, top: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return ScreenReview(
-                                      title: 'Unreviewed',
-                                    );
-                                  }),
-                                );
-                              },
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(width: 1, color: shade4),
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      state.unreviewedApplicants.length
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontFamily: 'PoppinsSemiBold',
-                                          fontSize: 35,
-                                          color: accentColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    const Text(
-                                      'Unreviewed',
-                                      style: TextStyle(
-                                          color: shade2, fontSize: fontSize4),
-                                    ),
-                                    sizedBoxH20()
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15, top: 10),
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(width: 1, color: shade4),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  const Text(
-                                    '2',
-                                    style: TextStyle(
-                                        fontFamily: 'PoppinsSemiBold',
-                                        fontSize: 35,
-                                        color: secondaryColor),
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  const Text(
-                                    'Reviewed',
-                                    style: TextStyle(
-                                        color: shade2, fontSize: fontSize4),
-                                  ),
-                                  sizedBoxH20()
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 15, bottom: 10),
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(width: 1, color: shade4),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    state.selectedApplicants.length.toString(),
-                                    style: const TextStyle(
-                                        fontFamily: 'PoppinsSemiBold',
-                                        fontSize: 35,
-                                        color: greenColor),
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  const Text(
-                                    'Selected',
-                                    style: TextStyle(
-                                        color: shade2, fontSize: fontSize4),
-                                  ),
-                                  sizedBoxH20()
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(right: 15, bottom: 10),
-                            child: GestureDetector(
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(width: 1, color: shade4),
-                                    borderRadius: BorderRadius.circular(7)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      state.rejectedApplicants.length
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontFamily: 'PoppinsSemiBold',
-                                          fontSize: 35,
-                                          color: redcolor),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    const Text(
-                                      'Rejected',
-                                      style: TextStyle(
-                                          color: shade2, fontSize: fontSize4),
-                                    ),
-                                    sizedBoxH20()
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 2,
-                        ))
+                    SliverList.list(children: [
+                      cdInterfaceWidget.countWidget(title: 'Unreviewed',color: const Color(0xffC5CAFF),applicantsList: state.unreviewedApplicants),
+                      cdInterfaceWidget.countWidget(title: 'Pending',color: const Color(0xffFBD5A9),applicantsList: state.reviewedApplicants),
+                      cdInterfaceWidget.countWidget(title: 'Selected',color: const Color(0xffA2EDD3),applicantsList: state.selectedApplicants),
+                      cdInterfaceWidget.countWidget(title: 'Rejected',color: const Color(0xffFEC9C9),applicantsList: state.rejectedApplicants),
+                      cdInterfaceWidget.countWidget(title: 'Bookmarked',color: const Color(0xffFBECA9),applicantsList: state.bookmarkedApplicants)
+                    ]),
+                    
                   ],
                 );
-                // SingleChildScrollView(
-                //   child: Column(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-
-                //       sizedBoxH20(),
-                //       Expanded(
-                //         child: GridView.count(
-                //           padding: EdgeInsets.symmetric(horizontal: 12),
-                //           crossAxisCount: 2,
-                //           primary: false,
-                //           crossAxisSpacing: 10,
-                //           mainAxisSpacing: 10,
-                //           children: [
-
-                //           ],
-                //         ),
-                //       )
-                // SingleChildScrollView(
-                //   child: Padding(
-                //     padding: const EdgeInsets.symmetric(horizontal: 45),
-                //     child: Column(
-                //       children: [
-                //         GestureDetector(
-                //           onTap: () {
-                //             Navigator.push(
-                //               context,
-                //               MaterialPageRoute(
-                //                   builder: (BuildContext context) {
-                //                 return ScreenReview(
-                //                   title: 'Unreviewed',
-                //                 );
-                //               }),
-                //             );
-                //           },
-                //           child: Container(
-                //             height: 80,
-                //             decoration: BoxDecoration(
-                //                 border:
-                //                     Border.all(width: 1, color: shade4),
-                //                 borderRadius: BorderRadius.circular(7)),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.center,
-                //               children: [
-                //                 SizedBox(
-                //                     width: 50,
-                //                     height: 50,
-                //                     child: Center(
-                //                         child: Text(
-                //                       state.unreviewedApplicants.length
-                //                           .toString(),
-                //                       style: const TextStyle(
-                //                           fontFamily: 'PoppinsSemiBold',
-                //                           fontSize: 28,
-                //                           color: accentColor),
-                //                     ))),
-                //                 sizedBoxW20(),
-                //                 Container(
-                //                   width: 180,
-                //                   height: 20,
-                //                   alignment: Alignment.centerLeft,
-                //                   child: const Text(
-                //                     'Unreviewed Profiles',
-                //                     style: TextStyle(
-                //                         color: shade2,
-                //                         fontSize: fontSize4),
-                //                   ),
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //         sizedBoxH15(),
-                //         Container(
-                //           height: 80,
-                //           decoration: BoxDecoration(
-                //               border: Border.all(width: 1, color: shade4),
-                //               borderRadius: BorderRadius.circular(7)),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               const SizedBox(
-                //                 width: 15,
-                //               ),
-                //               SizedBox(
-                //                   width: 50,
-                //                   height: 50,
-                //                   child: Center(
-                //                       child: Text(
-                //                     state.selectedApplicants.length
-                //                         .toString(),
-                //                     style: const TextStyle(
-                //                         fontFamily: 'PoppinsSemiBold',
-                //                         fontSize: 28,
-                //                         color: greenColor),
-                //                   ))),
-                //               sizedBoxW20(),
-                //               Container(
-                //                 width: 180,
-                //                 height: 20,
-                //                 alignment: Alignment.centerLeft,
-                //                 child: const Text(
-                //                   'Selected Profiles',
-                //                   style: TextStyle(
-                //                       color: shade2, fontSize: fontSize4),
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         sizedBoxH15(),
-                //         Container(
-                //           height: 80,
-                //           decoration: BoxDecoration(
-                //               border: Border.all(width: 1, color: shade4),
-                //               borderRadius: BorderRadius.circular(7)),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               const SizedBox(
-                //                 width: 15,
-                //               ),
-                //               SizedBox(
-                //                   width: 50,
-                //                   height: 50,
-                //                   child: Center(
-                //                       child: Text(
-                //                     state.rejectedApplicants.length
-                //                         .toString(),
-                //                     style: const TextStyle(
-                //                         fontFamily: 'PoppinsSemiBold',
-                //                         fontSize: 28,
-                //                         color: redcolor),
-                //                   ))),
-                //               sizedBoxW20(),
-                //               Container(
-                //                 width: 180,
-                //                 height: 40,
-                //                 alignment: Alignment.centerLeft,
-                //                 child: const Text(
-                //                   'Rejected Profiles',
-                //                   style: TextStyle(
-                //                       color: shade2, fontSize: fontSize4),
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // )
-                //     ],
-                //   ),
-                // );
               }
             }
           },

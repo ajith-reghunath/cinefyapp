@@ -21,6 +21,7 @@ UserModel2 _$UserModel2FromJson(Map<String, dynamic> json) => UserModel2(
       bookmarks: (json['bookmarks'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      profilePic: json['profilePic'] as String?,
     );
 
 Map<String, dynamic> _$UserModel2ToJson(UserModel2 instance) =>
@@ -35,6 +36,7 @@ Map<String, dynamic> _$UserModel2ToJson(UserModel2 instance) =>
       'isDelete': instance.isDelete,
       'iV': instance.iV,
       'bookmarks': instance.bookmarks,
+      'profilePic': instance.profilePic,
     };
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(

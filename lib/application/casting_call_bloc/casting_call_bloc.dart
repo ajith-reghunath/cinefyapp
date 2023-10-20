@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:cinefy/domain/created_casting_call/created_casting_call_model.dart';
+import 'package:cinefy/domain/user/loaduser2_model.dart';
 import 'dart:convert';
 
 import '../../core/constants.dart';
 import '../../domain/casting_call/casting_call_model.dart' as ccm;
 import 'package:http/http.dart' as http;
+import 'package:cinefy/infrastructure/api_calls/base_client.dart' as bc;
 
 import '../../infrastructure/Functions/current_user_functions.dart';
 import '../../infrastructure/Models/current_user.dart';
@@ -15,10 +17,13 @@ part 'casting_call_state.dart';
 class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
   CastingCallBloc()
       : super(CastingCallInitial(
+          applicants: {},
           appliedCastingCallList: [],
           rejectedApplicants: [],
           selectedApplicants: [],
           unreviewedApplicants: [],
+          bookmarkedApplicants: [],
+          reviewedApplicants: [],
         )) {
     on<LoadCastingCall>((event, emit) async {
       ccm.CastingCallModel castingCallModel = ccm.CastingCallModel();
@@ -26,10 +31,13 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           await getCastingCalls(castingCallModel);
       emit(CastingCallState(
           castingCallList: castingCallList,
+          applicants: state.applicants,
           appliedCastingCallList: state.appliedCastingCallList,
           rejectedApplicants: state.rejectedApplicants,
           selectedApplicants: state.selectedApplicants,
           unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
           createdCastingCallList: state.createdCastingCallList));
     });
 
@@ -41,10 +49,13 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           await getCastingCalls(castingCallModel);
       emit(CastingCallState(
           castingCallList: castingCallList,
+          applicants: state.applicants,
           appliedCastingCallList: state.appliedCastingCallList,
           rejectedApplicants: state.rejectedApplicants,
           selectedApplicants: state.selectedApplicants,
           unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
           createdCastingCallList: state.createdCastingCallList));
     });
 
@@ -74,8 +85,11 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
               castingCallList: state.castingCallList,
               appliedCastingCallList: state.appliedCastingCallList,
               rejectedApplicants: state.rejectedApplicants,
+              applicants: state.applicants,
               selectedApplicants: state.selectedApplicants,
               unreviewedApplicants: state.unreviewedApplicants,
+              bookmarkedApplicants: state.bookmarkedApplicants,
+              reviewedApplicants: state.reviewedApplicants,
               createdCastingCallList: state.createdCastingCallList));
           print(k);
           print(state.appliedCastingCallList.length);
@@ -88,45 +102,70 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           await searchCall(event.text);
       emit(CastingCallState(
           castingCallList: state.castingCallList,
+          applicants: state.applicants,
           appliedCastingCallList: state.appliedCastingCallList,
           searchCastingCallList: searchedCastingCallList,
           selectedApplicants: state.selectedApplicants,
           rejectedApplicants: state.rejectedApplicants,
           unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
           createdCastingCallList: state.createdCastingCallList));
     });
 
-    on<AddToSortedList>((event, emit) {
+    on<AddToSortedList>((event, emit) async {
+      Map<String, UserModel2> loadedApplicants = {};
       if (event.applicants != null) {
         for (int i = 0; i < event.applicants!.length; i++) {
+          http.Response? response =
+              await bc.BaseClient().profileApi(event.applicants![i].user!.sId!);
+
+          if (response != null) {
+            var data = jsonDecode(response.body);
+            UserModel2 userModel2 = UserModel2.fromJson(data);
+            loadedApplicants[event.applicants![i].user!.sId!] = userModel2;
+          } else {
+            print('not getting profile');
+          }
+
           if (event.applicants![i].status == 'unreviewed') {
             state.unreviewedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'selected') {
+          } else if (event.applicants![i].status == 'select') {
             state.selectedApplicants.add(event.applicants![i]);
-          } else {
+          } else if (event.applicants![i].status == 'reject') {
             state.rejectedApplicants.add(event.applicants![i]);
+          } else if (event.applicants![i].status == 'bookmark') {
+            state.bookmarkedApplicants.add(event.applicants![i]);
+          } else if (event.applicants![i].status == 'reviewed') {
+            state.reviewedApplicants.add(event.applicants![i]);
           }
         }
       }
       emit(CastingCallState(
+          applicants: loadedApplicants,
           castingCallList: state.castingCallList,
           appliedCastingCallList: state.appliedCastingCallList,
           searchCastingCallList: state.searchCastingCallList,
           selectedApplicants: state.selectedApplicants,
           rejectedApplicants: state.rejectedApplicants,
           unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
           createdCastingCallList: state.createdCastingCallList));
     });
 
     on<RemoveFromSortedList>((event, emit) {
       emit(CastingCallState(
+          applicants: state.applicants,
           castingCallList: state.castingCallList,
           createdCastingCallList: state.createdCastingCallList,
           appliedCastingCallList: state.appliedCastingCallList,
           searchCastingCallList: state.searchCastingCallList,
           selectedApplicants: [],
           rejectedApplicants: [],
-          unreviewedApplicants: []));
+          unreviewedApplicants: [],
+          bookmarkedApplicants: [],
+          reviewedApplicants: []));
     });
 
     on<LoadCreatedCastingCall>((event, emit) async {
@@ -137,12 +176,46 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
       List<CreatedCastingCall> createdCastingCallList =
           await getCDCastingCalls(userID);
       emit(CastingCallState(
+        applicants: state.applicants,
+        castingCallList: state.castingCallList,
+        createdCastingCallList: createdCastingCallList,
+        appliedCastingCallList: state.appliedCastingCallList,
+        rejectedApplicants: state.rejectedApplicants,
+        selectedApplicants: state.selectedApplicants,
+        unreviewedApplicants: state.unreviewedApplicants,
+        bookmarkedApplicants: state.bookmarkedApplicants,
+        reviewedApplicants: state.reviewedApplicants,
+      ));
+    });
+
+    on<ProfileAddingInitialized>((event, emit) {
+      emit(CastingCallState(
+          applicants: state.applicants,
           castingCallList: state.castingCallList,
-          createdCastingCallList: createdCastingCallList,
           appliedCastingCallList: state.appliedCastingCallList,
-          rejectedApplicants: state.rejectedApplicants,
+          searchCastingCallList: state.searchCastingCallList,
           selectedApplicants: state.selectedApplicants,
-          unreviewedApplicants: state.unreviewedApplicants));
+          rejectedApplicants: state.rejectedApplicants,
+          unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
+          createdCastingCallList: state.createdCastingCallList,
+          profileAddedStatus: 'Initialized'));
+    });
+
+    on<ProfileAdded>((event, emit) {
+      emit(CastingCallState(
+          applicants: state.applicants,
+          castingCallList: state.castingCallList,
+          appliedCastingCallList: state.appliedCastingCallList,
+          searchCastingCallList: state.searchCastingCallList,
+          selectedApplicants: state.selectedApplicants,
+          rejectedApplicants: state.rejectedApplicants,
+          unreviewedApplicants: state.unreviewedApplicants,
+          bookmarkedApplicants: state.bookmarkedApplicants,
+          reviewedApplicants: state.reviewedApplicants,
+          createdCastingCallList: state.createdCastingCallList,
+          profileAddedStatus: 'Completed'));
     });
   }
 

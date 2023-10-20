@@ -122,6 +122,19 @@ class BaseClient {
     }
   }
 
+  Future<dynamic> profileApi(String userID) async {
+    String urlEndPoint = '/getUserDetails?id=$userID';
+    final url = apiBase + urlEndPoint;
+    var uri = Uri.parse(url);
+    try {
+      final response = await http.get(uri);
+      return _processResponse(response);
+    } catch (e) {
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
+      logInMessage = errorMessage;
+    }
+  }
+
   Future<dynamic> addMessagetoDB({String ?fromID, String ?toID, String ?message}) async {
     String urlEndPoint = 'messages/addmsg';
     final url = apiBase + urlEndPoint;
