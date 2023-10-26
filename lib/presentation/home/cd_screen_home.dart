@@ -35,10 +35,6 @@ class ScreenCdHome extends StatelessWidget {
               builder: (context, state) {
                 return BlocBuilder<UserBloc, UserState>(
                   builder: (context, userState) {
-                    if (call == 1) {
-                      call = 0;
-                    }
-
                     Stream stream = controller.stream;
                     stream.listen((value) {
                       context.read<UserBloc>().add(LoadUser(response: value));
@@ -142,10 +138,13 @@ class ScreenCdHome extends StatelessWidget {
                               return GestureDetector(
                                   onTap: () {
                                     context.read<CastingCallBloc>().add(
-                                        AddToSortedList(
-                                            applicants: castingCallstate
-                                                .createdCastingCallList![index]
-                                                .applicants));
+                                          AddToSortedList(
+                                              applicants: castingCallstate
+                                                  .createdCastingCallList![
+                                                      index]
+                                                  .applicants),
+                                        );
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(

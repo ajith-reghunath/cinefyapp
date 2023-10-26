@@ -23,8 +23,16 @@ class AddToSortedList extends CastingCallEvent {
 
 class RemoveFromSortedList extends CastingCallEvent {}
 
-class LoadCreatedCastingCall extends CastingCallEvent{}
+class LoadCreatedCastingCall extends CastingCallEvent {}
 
 class ProfileAddingInitialized extends CastingCallEvent {}
 
 class ProfileAdded extends CastingCallEvent {}
+
+class ChangeApplicantStatus extends CastingCallEvent {
+  String userID;
+  String postID;
+  String userStatus;
+  ChangeApplicantStatus(
+      {required this.userID, required this.postID, required this.userStatus});
+}

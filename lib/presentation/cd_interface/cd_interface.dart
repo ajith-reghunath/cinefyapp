@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/colors.dart';
 
-
 class CastingDirectorInterface extends StatelessWidget {
   CastingDirectorInterface({super.key, required this.index});
   int index;
@@ -16,7 +15,8 @@ class CastingDirectorInterface extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    CdInterfaceWidget cdInterfaceWidget = CdInterfaceWidget(width: width,context: context);
+    CdInterfaceWidget cdInterfaceWidget =
+        CdInterfaceWidget(width: width, context: context);
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<CastingCallBloc, CastingCallState>(
@@ -44,6 +44,9 @@ class CastingDirectorInterface extends StatelessWidget {
                             context
                                 .read<CastingCallBloc>()
                                 .add(RemoveFromSortedList());
+                            context
+                                .read<CastingCallBloc>()
+                                .add(LoadCreatedCastingCall());
                             Navigator.pop(context);
                           },
                           icon: const Icon(Icons.arrow_back)),
@@ -73,13 +76,32 @@ class CastingDirectorInterface extends StatelessWidget {
                       ),
                     ),
                     SliverList.list(children: [
-                      cdInterfaceWidget.countWidget(title: 'Unreviewed',color: const Color(0xffC5CAFF),applicantsList: state.unreviewedApplicants),
-                      cdInterfaceWidget.countWidget(title: 'Pending',color: const Color(0xffFBD5A9),applicantsList: state.reviewedApplicants),
-                      cdInterfaceWidget.countWidget(title: 'Selected',color: const Color(0xffA2EDD3),applicantsList: state.selectedApplicants),
-                      cdInterfaceWidget.countWidget(title: 'Rejected',color: const Color(0xffFEC9C9),applicantsList: state.rejectedApplicants),
-                      cdInterfaceWidget.countWidget(title: 'Bookmarked',color: const Color(0xffFBECA9),applicantsList: state.bookmarkedApplicants)
+                      cdInterfaceWidget.countWidget(
+                          title: 'Unreviewed',
+                          color: const Color(0xffC5CAFF),
+                          applicantsList: state.unreviewedApplicants,
+                          castingCallIndex: index),
+                      cdInterfaceWidget.countWidget(
+                          title: 'Pending',
+                          color: const Color(0xffFBD5A9),
+                          applicantsList: state.reviewedApplicants,
+                          castingCallIndex: index),
+                      cdInterfaceWidget.countWidget(
+                          title: 'Selected',
+                          color: const Color(0xffA2EDD3),
+                          applicantsList: state.selectedApplicants,
+                          castingCallIndex: index),
+                      cdInterfaceWidget.countWidget(
+                          title: 'Rejected',
+                          color: const Color(0xffFEC9C9),
+                          applicantsList: state.rejectedApplicants,
+                          castingCallIndex: index),
+                      cdInterfaceWidget.countWidget(
+                          title: 'Bookmarked',
+                          color: const Color(0xffFBECA9),
+                          applicantsList: state.bookmarkedApplicants,
+                          castingCallIndex: index)
                     ]),
-                    
                   ],
                 );
               }

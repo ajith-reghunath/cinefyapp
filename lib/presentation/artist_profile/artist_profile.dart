@@ -16,7 +16,9 @@ class ArtistProfile extends StatelessWidget {
       {super.key,
       required this.applicantsList,
       required this.index,
-      required this.pageTitle});
+      required this.pageTitle,
+      required this.castingCallIndex});
+  int castingCallIndex;
   int index;
   String? pageTitle;
   List<Applicants>? applicantsList;
@@ -223,13 +225,16 @@ class ArtistProfile extends StatelessWidget {
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
-                floatingActionButton: uiState.profileIndex! >= 0
-                    ? ArtistProfileWidgets().profileControlWidget(
-                        title: pageTitle!,
-                        width: width,
-                        applicantsList: applicantsList,
-                      )
-                    : const SizedBox());
+                floatingActionButton: pageTitle == 'Selected Profiles'
+                    ? const SizedBox()
+                    : (uiState.profileIndex! >= 0
+                        ? ArtistProfileWidgets().profileControlWidget(
+                            title: pageTitle!,
+                            width: width,
+                            applicantsList: applicantsList,
+                            castingCallIndex: castingCallIndex
+                          )
+                        : const SizedBox()));
           },
         );
       },

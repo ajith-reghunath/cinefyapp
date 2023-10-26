@@ -135,7 +135,8 @@ class BaseClient {
     }
   }
 
-  Future<dynamic> addMessagetoDB({String ?fromID, String ?toID, String ?message}) async {
+  Future<dynamic> addMessagetoDB(
+      {String? fromID, String? toID, String? message}) async {
     String urlEndPoint = 'messages/addmsg';
     final url = apiBase + urlEndPoint;
     var uri = Uri.parse(url);
@@ -147,16 +148,33 @@ class BaseClient {
         },
         body: jsonEncode({
           'from': fromID,
-        'to': toID,
-        'message': message,
-        'time': DateTime.now().toString()
+          'to': toID,
+          'message': message,
+          'time': DateTime.now().toString()
         }),
       );
       return _processResponse(response);
-    } 
-    catch (e) {
+    } catch (e) {
       final errorMessage = await ExceptionHandlers().getExceptionString(e);
       print('Handled Error: $errorMessage');
+      logInMessage = errorMessage;
+    }
+  }
+
+  Future<dynamic> updateStatus(
+      String userID, String postID, String userStatus) async {
+    print('user ID : $userID');
+    print('post ID : $postID');
+    print('user status : $userStatus');
+    String urlEndPoint =
+        'updateStatus?id=$userID&postId=$postID&status=$userStatus';
+    final url = apiBase + urlEndPoint;
+    var uri = Uri.parse(url);
+    try {
+      final response = await http.patch(uri);
+      return _processResponse(response);
+    } catch (e) {
+      final errorMessage = await ExceptionHandlers().getExceptionString(e);
       logInMessage = errorMessage;
     }
   }

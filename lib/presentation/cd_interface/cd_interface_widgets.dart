@@ -13,6 +13,7 @@ class CdInterfaceWidget {
     required String title,
     required Color? color,
     required List<Applicants> applicantsList,
+    required int castingCallIndex,
   }) {
     return GestureDetector(
       onTap: () {
@@ -20,6 +21,7 @@ class CdInterfaceWidget {
           context,
           MaterialPageRoute(builder: (BuildContext context) {
             return ScreenReview(
+              castingCallIndex: castingCallIndex,
               title: title,
               applicantsList: applicantsList,
             );

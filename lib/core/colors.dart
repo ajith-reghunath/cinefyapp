@@ -16,3 +16,4 @@ const selectedColor = Color(0xff44AE3B);
 const rejectedColor = Color(0xffAE3B3B);
 const unreviewedColor = Color(0xff5636D7);
 const greenColor = Color(0xff1B7A13);
+const reviewingColor = Color(0xffFBAB16);

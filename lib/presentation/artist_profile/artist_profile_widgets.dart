@@ -13,6 +13,7 @@ class ArtistProfileWidgets {
     required double width,
     required List<Applicants>? applicantsList,
     required String title,
+    required int castingCallIndex,
   }) {
     late List<Applicants> group1;
     late List<Applicants> group2;
@@ -38,8 +39,8 @@ class ArtistProfileWidgets {
                 rightFirstButtonText = 'Select';
                 rightSecondButtonText = 'Bookmark';
                 leftButtonColor = const Color(0xffFEC9C9);
-                rightFirstButtonColor= const Color(0xffA2EDD3);
-                rightSecondButtonColor= const Color(0xffFBECA9);
+                rightFirstButtonColor = const Color(0xffA2EDD3);
+                rightSecondButtonColor = const Color(0xffFBECA9);
                 break;
               case 'Selected':
                 group1 = state.selectedApplicants;
@@ -50,8 +51,8 @@ class ArtistProfileWidgets {
                 rightFirstButtonText = 'Bookmark';
                 rightSecondButtonText = 'Pending';
                 leftButtonColor = const Color(0xffFEC9C9);
-                rightFirstButtonColor= const Color(0xffFBECA9);
-                rightSecondButtonColor= const Color(0xffFBD5A9);
+                rightFirstButtonColor = const Color(0xffFBECA9);
+                rightSecondButtonColor = const Color(0xffFBD5A9);
                 break;
               case 'Rejected':
                 group1 = state.rejectedApplicants;
@@ -62,8 +63,8 @@ class ArtistProfileWidgets {
                 rightFirstButtonText = 'Select';
                 rightSecondButtonText = 'Bookmark';
                 leftButtonColor = const Color(0xffFBD5A9);
-                rightFirstButtonColor= const Color(0xffA2EDD3);
-                rightSecondButtonColor= const Color(0xffFBECA9);
+                rightFirstButtonColor = const Color(0xffA2EDD3);
+                rightSecondButtonColor = const Color(0xffFBECA9);
                 break;
               case 'Pending':
                 group1 = state.reviewedApplicants;
@@ -74,8 +75,8 @@ class ArtistProfileWidgets {
                 rightFirstButtonText = 'Select';
                 rightSecondButtonText = 'Bookmark';
                 leftButtonColor = const Color(0xffFEC9C9);
-                rightFirstButtonColor= const Color(0xffA2EDD3);
-                rightSecondButtonColor= const Color(0xffFBECA9);
+                rightFirstButtonColor = const Color(0xffA2EDD3);
+                rightSecondButtonColor = const Color(0xffFBECA9);
                 break;
               case 'Bookmarked':
                 group1 = state.bookmarkedApplicants;
@@ -86,8 +87,8 @@ class ArtistProfileWidgets {
                 rightFirstButtonText = 'Select';
                 rightSecondButtonText = 'Pending';
                 leftButtonColor = const Color(0xffFEC9C9);
-                rightFirstButtonColor= const Color(0xffA2EDD3);
-                rightSecondButtonColor= const Color(0xffFBD5A9);
+                rightFirstButtonColor = const Color(0xffA2EDD3);
+                rightSecondButtonColor = const Color(0xffFBD5A9);
                 break;
             }
 
@@ -109,6 +110,7 @@ class ArtistProfileWidgets {
                                 applicantsList![uiState.profileIndex!]) ==
                             false) {
                           group2.add(applicantsList[uiState.profileIndex!]);
+                          context.read<CastingCallBloc>().add(ChangeApplicantStatus(userID: applicantsList[uiState.profileIndex!].user!.sId!,postID: state.createdCastingCallList![castingCallIndex].sId!,userStatus: leftButtonText));
                           uiState.profileIndex! == applicantsList.length - 1
                               ? context.read<UiBloc>().add(ProfileIndexChanged(
                                   profileIndex: uiState.profileIndex! - 1))
@@ -119,7 +121,7 @@ class ArtistProfileWidgets {
                       },
                       child: Row(
                         children: [
-                          sizedBoxW20(),
+                          sizedBoxW10(),
                           Container(
                             width: 15,
                             decoration: BoxDecoration(
@@ -164,6 +166,7 @@ class ArtistProfileWidgets {
                           if (title == 'Unreviewed') {
                             state.reviewedApplicants
                                 .add(applicantsList[uiState.profileIndex!]);
+                            context.read<CastingCallBloc>().add(ChangeApplicantStatus(userID: applicantsList[uiState.profileIndex!].user!.sId!,postID: state.createdCastingCallList![castingCallIndex].sId!,userStatus: 'Pending'));
                             uiState.profileIndex! == applicantsList.length - 1
                                 ? context.read<UiBloc>().add(
                                     ProfileIndexChanged(
@@ -188,6 +191,7 @@ class ArtistProfileWidgets {
                                   applicantsList[uiState.profileIndex!]) ==
                               false) {
                             group3.add(applicantsList[uiState.profileIndex!]);
+                            context.read<CastingCallBloc>().add(ChangeApplicantStatus(userID: applicantsList[uiState.profileIndex!].user!.sId!,postID: state.createdCastingCallList![castingCallIndex].sId!,userStatus: rightFirstButtonText));
                             uiState.profileIndex! == applicantsList.length - 1
                                 ? context.read<UiBloc>().add(
                                     ProfileIndexChanged(
@@ -204,6 +208,7 @@ class ArtistProfileWidgets {
                                   applicantsList[uiState.profileIndex!]) ==
                               false) {
                             group4.add(applicantsList[uiState.profileIndex!]);
+                            context.read<CastingCallBloc>().add(ChangeApplicantStatus(userID: applicantsList[uiState.profileIndex!].user!.sId!,postID: state.createdCastingCallList![castingCallIndex].sId!,userStatus: rightSecondButtonText));
                             uiState.profileIndex! == applicantsList.length - 1
                                 ? context.read<UiBloc>().add(
                                     ProfileIndexChanged(
@@ -237,7 +242,7 @@ class ArtistProfileWidgets {
                                     color: rightFirstButtonColor,
                                   ),
                                 ),
-                                sizedBoxW20(),
+                                sizedBoxW10(),
                               ],
                             )
                           : Row(
@@ -255,7 +260,7 @@ class ArtistProfileWidgets {
                                     color: rightSecondButtonColor,
                                   ),
                                 ),
-                                sizedBoxW20(),
+                                sizedBoxW10(),
                               ],
                             ),
                     ),

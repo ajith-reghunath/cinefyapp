@@ -130,13 +130,13 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
 
           if (event.applicants![i].status == 'unreviewed') {
             state.unreviewedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'select') {
+          } else if (event.applicants![i].status == 'Select') {
             state.selectedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'reject') {
+          } else if (event.applicants![i].status == 'Reject') {
             state.rejectedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'bookmark') {
+          } else if (event.applicants![i].status == 'Bookmark') {
             state.bookmarkedApplicants.add(event.applicants![i]);
-          } else if (event.applicants![i].status == 'reviewed') {
+          } else if (event.applicants![i].status == 'Pending') {
             state.reviewedApplicants.add(event.applicants![i]);
           }
         }
@@ -216,6 +216,18 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
           reviewedApplicants: state.reviewedApplicants,
           createdCastingCallList: state.createdCastingCallList,
           profileAddedStatus: 'Completed'));
+    });
+
+    on<ChangeApplicantStatus>((event, emit) async {
+      http.Response? response = await bc.BaseClient()
+          .updateStatus(event.userID, event.postID, event.userStatus);
+
+      if (response != null) {
+        var data = jsonDecode(response.body);
+        print('status update : $data');
+      } else {
+        print('status not updates');
+      }
     });
   }
 

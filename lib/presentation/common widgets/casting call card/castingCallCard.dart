@@ -313,14 +313,15 @@ Widget appliedCastingcallCard(
 
 Widget castingCallStatus(String status) {
   Color textcolor;
-  if (status == 'selected') {
+  if (status == 'Selected') {
     textcolor = selectedColor;
-  } else if (status == 'rejected') {
+  } else if (status == 'Rejected') {
     textcolor = rejectedColor;
   } else if (status == 'unreviewed') {
     textcolor = unreviewedColor;
   } else {
-    textcolor = accentColor;
+    status = 'reviewing';
+    textcolor = reviewingColor;
   }
   return Text(status, style: TextStyle(fontSize: fontSize3, color: textcolor));
 }
