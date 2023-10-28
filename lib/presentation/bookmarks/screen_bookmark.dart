@@ -11,17 +11,11 @@ import '../common widgets/common_widgets.dart';
 // ignore: must_be_immutable
 class ScreenBookmark extends StatelessWidget {
   ScreenBookmark({super.key});
-  int call = 1;
 
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
         builder: (context, state) {
-          if (call == 1) {
-            print('bbbbbb called');
-            // context.read<BookmarkBlocBloc>().add(LoadBookmarks());
-            call = 0;
-          }
 
           final width = MediaQuery.of(context).size.width;
           final height = MediaQuery.of(context).size.height;
@@ -34,23 +28,7 @@ class ScreenBookmark extends StatelessWidget {
                   child: Center(child: screenTitle('Bookmarks')),
                 ),
                 sizedBoxH10(),
-                // TextButton(
-                //     onPressed: () {
-                //       for (int i = 0;
-                //           i < state.appliedCastingCallList.length;
-                //           i++) {
-                //         print(state.appliedCastingCallList[i].title
-                //             .toString());
-                //       }
-                //     },
-                //     child: Text('click me')),
-                // TextButton(
-                //     onPressed: () {
-                //       context
-                //           .read<CastingCallBloc>()
-                //           .add(AppliedCastingCalls());
-                //     },
-                //     child: Text('load')),
+                
                 Visibility(
                   visible: state.userBookMarked != null,
                   replacement: SizedBox(

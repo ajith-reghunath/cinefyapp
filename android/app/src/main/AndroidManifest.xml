@@ -2,7 +2,7 @@
     package="com.example.cinefy">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="cinefy"
+        android:label="Cinefy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

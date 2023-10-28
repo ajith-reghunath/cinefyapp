@@ -37,15 +37,14 @@ class SocketIoFunctions {
       String? fromID,
       String? toID,
       String? message}) {
-    print(fromID);
-    print(toID);
-    // String message = messageController.text.trim();
+    String time = DateTime.now().subtract(const Duration(hours: 5,minutes: 30)).toString();
+    String convertedTime = time.replaceFirst(' ', 'T');
     if (currentSocket != null) {
       currentSocket.emit('send-msg', {
         'from': fromID,
         'to': toID,
         'message': message,
-        'time': DateTime.now().toString()
+        'time': convertedTime
       });
     }
   }

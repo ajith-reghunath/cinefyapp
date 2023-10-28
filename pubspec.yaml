@@ -57,7 +57,25 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^2.0.0
   json_serializable: ^6.7.1
+  flutter_launcher_icons: "^0.13.1"
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/app icon.png"
+    background_color: "#f8f8f8"
+    theme_color: "#f8f8f8"
+  windows:
+    generate: true
+    image_path: "assets/app icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/app icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

@@ -30,6 +30,7 @@ class IndividualChatScreen extends StatelessWidget {
                     text: data['message'],
                     sender: data['from'],
                     time: data['time']);
+               
                 context
                     .read<ChatBloc>()
                     .add(AddMessageToChat(message: newMessage));
@@ -57,6 +58,7 @@ class IndividualChatScreen extends StatelessWidget {
                               IconButton(
                                   onPressed: () {
                                     Navigator.pop(context);
+                                    context.read<ChatBloc>().add(GetChats(id: userState.sId));
                                   },
                                   icon: const Icon(
                                     Icons.arrow_back,
@@ -140,6 +142,9 @@ class IndividualChatScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 2),
                                       child: Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: width*0.7
+                                        ),
                                         decoration: BoxDecoration(
                                           color: message.sender == userState.sId
                                               ? const Color(0xffc7c9fb)
@@ -227,7 +232,8 @@ class IndividualChatScreen extends StatelessWidget {
                                         time: DateTime.now()
                                             .subtract(const Duration(
                                                 hours: 5, minutes: 30))
-                                            .toString().replaceAll(' ', 'T'));
+                                            .toString()
+                                            .replaceAll(' ', 'T'));
                                     context.read<ChatBloc>().add(
                                         AddMessageToChat(message: newMessage));
                                     chatController.clear();

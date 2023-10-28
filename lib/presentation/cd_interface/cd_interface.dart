@@ -26,7 +26,7 @@ class CastingDirectorInterface extends StatelessWidget {
             } else {
               if (state.selectedApplicants.isEmpty &&
                   state.rejectedApplicants.isEmpty &&
-                  state.unreviewedApplicants.isEmpty) {
+                  state.unreviewedApplicants.isEmpty && state.bookmarkedApplicants.isEmpty && state.reviewedApplicants.isEmpty) {
                 return const Center(
                     child: CircularProgressIndicator(
                   color: accentColor,

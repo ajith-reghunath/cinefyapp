@@ -11,9 +11,10 @@ import '../common widgets/common_widgets.dart';
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
-  int call = 1;
+
   @override
   Widget build(BuildContext context) {
+    int call = 1;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.width;
     return BlocBuilder<ChatBloc, ChatState>(
@@ -21,6 +22,7 @@ class ChatScreen extends StatelessWidget {
         return BlocBuilder<UserBloc, UserState>(
           builder: (context, userState) {
             if (call == 1) {
+              print('function called');
               context.read<ChatBloc>().add(GetChats(id: userState.sId));
               call = 0;
             }
@@ -85,19 +87,21 @@ class ChatScreen extends StatelessWidget {
                                               builder: (BuildContext context) {
                                             return (IndividualChatScreen(
                                               receiverID: state.chatList![index]
-                                                              .users![0].sId ==
-                                                          userState.sId
-                                                      ? state.chatList![index]
-                                                          .users![1].sId!
-                                                      : state.chatList![index]
-                                                          .users![0].sId!,
-                                              receiverName: state.chatList![index]
-                                                              .users![0].sId ==
-                                                          userState.sId
-                                                      ? state.chatList![index]
-                                                          .users![1].name!
-                                                      : state.chatList![index]
-                                                          .users![0].name!,
+                                                          .users![0].sId ==
+                                                      userState.sId
+                                                  ? state.chatList![index]
+                                                      .users![1].sId!
+                                                  : state.chatList![index]
+                                                      .users![0].sId!,
+                                              receiverName: state
+                                                          .chatList![index]
+                                                          .users![0]
+                                                          .sId ==
+                                                      userState.sId
+                                                  ? state.chatList![index]
+                                                      .users![1].name!
+                                                  : state.chatList![index]
+                                                      .users![0].name!,
                                             ));
                                           }),
                                         );
@@ -129,13 +133,22 @@ class ChatScreen extends StatelessWidget {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        state.chatList![index]
-                                                              .users![0].sId ==
-                                                          userState.sId
-                                                      ? state.chatList![index]
-                                                          .users![1].name!
-                                                      : state.chatList![index]
-                                                          .users![0].name!,
+                                                        state
+                                                                    .chatList![
+                                                                        index]
+                                                                    .users![0]
+                                                                    .sId ==
+                                                                userState.sId
+                                                            ? state
+                                                                .chatList![
+                                                                    index]
+                                                                .users![1]
+                                                                .name!
+                                                            : state
+                                                                .chatList![
+                                                                    index]
+                                                                .users![0]
+                                                                .name!,
                                                         style: const TextStyle(
                                                             fontFamily:
                                                                 'PoppinsMedium',
@@ -158,7 +171,13 @@ class ChatScreen extends StatelessWidget {
                                                 ),
                                                 sizedBoxW20(),
                                                 CircleAvatar(
-                                                  backgroundColor: accentColor,
+                                                  backgroundColor: state
+                                                              .chatList![index]
+                                                              .unRead!
+                                                              .id ==
+                                                          userState.sId
+                                                      ? accentColor
+                                                      : shade3,
                                                   radius: 12,
                                                   child: Text(
                                                     state.chatList![index]

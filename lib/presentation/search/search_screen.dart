@@ -1,5 +1,6 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
+import 'package:cinefy/domain/time_ago/time_display.dart';
 import 'package:cinefy/presentation/castingcall/widgets/screen_casting_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,7 @@ class ScreenSearch extends StatelessWidget {
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              prefixIcon: Icon(Icons.search),
+                              prefixIcon: Icon(Icons.search,),
                               // prefixIconColor: state.email.isNotEmpty ? shade2 : shade3,
                               focusColor: shade1,
                               hintText: 'Search here',
@@ -89,6 +90,10 @@ class ScreenSearch extends StatelessWidget {
                                           : state.searchCastingCallList![index]
                                               .language![0]
                                               .toString(),
+                                      time: TimeDisplay().getTime(state
+                                              .searchCastingCallList![index].createdAt!),
+                                      postID: state
+                                              .searchCastingCallList![index].sId
                                     ),
                                   );
                                 },

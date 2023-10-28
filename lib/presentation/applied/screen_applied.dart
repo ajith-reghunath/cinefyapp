@@ -14,9 +14,9 @@ import '../castingcall/screen_casting_call.dart';
 // ignore: must_be_immutable
 class ScreenApplied extends StatelessWidget {
   ScreenApplied({super.key});
-  int call = 1;
   @override
   Widget build(BuildContext context) {
+    int call = 1;
     return SafeArea(
       child: BlocBuilder<CastingCallBloc, CastingCallState>(
         builder: (context, state) {

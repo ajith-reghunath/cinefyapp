@@ -183,19 +183,29 @@ Widget details(double width, int castingIndex) {
                                           ),
                                         ),
                                         sizedBoxW20(),
-                                        const Column(
+                                        Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Male Actor',
-                                              style: TextStyle(
+                                              castingState
+                                                          .castingCallList![
+                                                              castingIndex]
+                                                          .gender ==
+                                                      'other'
+                                                  ? castingState
+                                                      .castingCallList![
+                                                          castingIndex]
+                                                      .roles![index]
+                                                      .toLowerCase()
+                                                  : '${castingState.castingCallList![castingIndex].gender} ${castingState.castingCallList![castingIndex].roles![index].toLowerCase()}',
+                                              style: const TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              '20 - 23 years',
-                                              style: TextStyle(
+                                              '${castingState.castingCallList![castingIndex].age![0]} - ${castingState.castingCallList![castingIndex].age![1]} years',
+                                              style: const TextStyle(
                                                   fontSize: 14, color: shade2),
                                             )
                                           ],
@@ -233,7 +243,8 @@ Widget details(double width, int castingIndex) {
                             ),
                           );
                         },
-                        childCount: 10, // Replace with your item count
+                        childCount: castingState.castingCallList![castingIndex]
+                            .roles!.length, // Replace with your item count
                       ),
                     )
                   : SliverList(
@@ -322,7 +333,7 @@ Widget details(double width, int castingIndex) {
                                         Text(
                                           castingState
                                               .castingCallList![castingIndex]
-                                              .description!,
+                                              .shortdescription!,
                                           style: const TextStyle(
                                               fontSize: fontSize2),
                                         )
@@ -505,8 +516,9 @@ Widget applyButton(double width, double height, int index) {
                                           Navigator.pop(context);
                                           showSnackBar(context,
                                               'Your profile is submitted');
-                                          castingState.appliedCastingCallList.add(castingState
-                                                      .castingCallList![index]);
+                                          castingState.appliedCastingCallList
+                                              .add(castingState
+                                                  .castingCallList![index]);
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
