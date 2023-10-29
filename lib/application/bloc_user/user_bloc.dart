@@ -101,8 +101,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             state.isApplied = false;
           }
         }
-      }
-      else{
+      } else {
         state.isApplied = false;
       }
     });
@@ -158,6 +157,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         photo: state.photo,
         bookmark: state.bookmark,
       ));
+    });
+
+    on<UserLoggedOut>((event, emit) {
+      emit(UserState());
     });
   }
 

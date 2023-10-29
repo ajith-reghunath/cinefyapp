@@ -1,4 +1,5 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
+import 'package:cinefy/application/bloc_user/user_event.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/chat_bloc/chat_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
@@ -188,6 +189,7 @@ Future<dynamic> options(BuildContext context1, WebSocket socket) {
                               ),
                               onPressed: () async {
                                 context.read<LoginBloc>().add(LogOut());
+                                context.read<UserBloc>().add(UserLoggedOut());
                                 Navigator.pop(context1);
                                 Navigator.pushReplacement(
                                   context1,
