@@ -10,10 +10,8 @@ import 'package:cinefy/core/colors.dart';
 import 'package:cinefy/presentation/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_socket_client/web_socket_client.dart';
 import '../../application/bloc_user/user_bloc.dart';
 import '../../application/bloc_user/user_event.dart';
-import '../../core/constants.dart';
 import '../../domain/time_ago/time_display.dart';
 import '../common widgets/casting call card/castingCallCard.dart';
 
@@ -34,10 +32,10 @@ class ScreenHome extends StatelessWidget {
               builder: (context, state) {
                 return BlocBuilder<UserBloc, UserState>(
                   builder: (context, userState) {
-                    Stream stream = controller.stream;
-                    stream.listen((value) {
-                      context.read<UserBloc>().add(LoadUser(response: value));
-                    });
+                    // Stream stream = controller.stream;
+                    // stream.listen((value) {
+                    //   context.read<UserBloc>().add(LoadUser(response: value));
+                    // });
 
                     final width = MediaQuery.of(context).size.width;
                     final height = MediaQuery.of(context).size.height;
@@ -81,10 +79,7 @@ class ScreenHome extends StatelessWidget {
                                   children: [
                                     IconButton(
                                         onPressed: () {
-                                          final uri = Uri.parse(
-                                              'https://app.nex-gen.shop/');
-                                          final socket = WebSocket(uri);
-                                          options(context,socket);
+                                          options(context);
                                         },
                                         icon: const Icon(
                                           Icons.menu,

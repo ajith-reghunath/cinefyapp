@@ -1,19 +1,17 @@
 import 'package:cinefy/application/bloc_user/user_bloc.dart';
 import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
+import 'package:cinefy/core/fontSize.dart';
 import 'package:cinefy/presentation/common%20widgets/casting%20call%20card/castingCallCard.dart';
 import 'package:cinefy/presentation/common%20widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../core/colors.dart';
 import '../../domain/casting_call/casting_call_model.dart';
 import '../../domain/time_ago/time_display.dart';
 import '../castingcall/screen_casting_call.dart';
 
 // ignore: must_be_immutable
 class ScreenApplied extends StatelessWidget {
-  ScreenApplied({super.key});
+  const ScreenApplied({super.key});
   @override
   Widget build(BuildContext context) {
     int call = 1;
@@ -39,37 +37,29 @@ class ScreenApplied extends StatelessWidget {
                       child: Center(child: screenTitle('Applied Calls')),
                     ),
                     sizedBoxH10(),
-                    // TextButton(
-                    //     onPressed: () {
-                    //       for (int i = 0;
-                    //           i < state.appliedCastingCallList.length;
-                    //           i++) {
-                    //         print(state.appliedCastingCallList[i].title
-                    //             .toString());
-                    //       }
-                    //     },
-                    //     child: Text('click me')),
-                    // TextButton(
-                    //     onPressed: () {
-                    //       context
-                    //           .read<CastingCallBloc>()
-                    //           .add(AppliedCastingCalls());
-                    //     },
-                    //     child: Text('load')),
                     Visibility(
                       visible: state.appliedCastingCallList.isNotEmpty,
                       replacement: SizedBox(
                         height: 0.7 * height,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: accentColor,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/no emoji.png',
+                              width: 0.7 * width,
+                            ),
+                            const Text(
+                              'You haven\'t applied for\nany casting calls !',
+                              style: TextStyle(fontSize: fontSize4),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
                         ),
                       ),
                       child: Expanded(
                         child: ListView.builder(
                           itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(   
+                            return GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -91,8 +81,8 @@ class ScreenApplied extends StatelessWidget {
                                       .name,
                                   type:
                                       appliedCastingCallList[index].projectType,
-                                  time: TimeDisplay().getTime(appliedCastingCallList[index]
-                                            .createdAt!),
+                                  time: TimeDisplay().getTime(
+                                      appliedCastingCallList[index].createdAt!),
                                   postID: appliedCastingCallList[index].sId,
                                   imageUrl:
                                       'https://app.nex-gen.shop/${appliedCastingCallList[index].image}',

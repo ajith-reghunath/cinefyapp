@@ -17,7 +17,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     on<LoadUser>(
       (event, emit) async {
-        print('check : cccccc');
+        print('xxxxxxxx Load user worked');
         print((event.response!.body));
         var userData = jsonDecode(event.response!.body);
         UserModel userModel = UserModel.fromJson(userData);
@@ -44,7 +44,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             bio: userModel.user!.profile!.bio,
             intro: userModel.user!.profile!.intro,
             photo: userModel.user!.profile!.photo,
-            bookmark: userModel.user!.bookmarks));
+            bookmark: userModel.user!.bookmarks,
+            userStatus: 'loaded'));
         CurrentUserModel currentUser = CurrentUserModel(
             userType: userModel.user!.type,
             id: userModel.user!.sId,

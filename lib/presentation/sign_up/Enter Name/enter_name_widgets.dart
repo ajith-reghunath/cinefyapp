@@ -7,7 +7,6 @@ import '../../../application/sign_up_bloc/sign_up_bloc.dart';
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
 import '../../common widgets/common_widgets.dart';
-import '../../main_page/screen_main_page.dart';
 
 Widget enterNameForm(double width) {
   return Padding(
@@ -61,7 +60,13 @@ Widget _finishSetUpButton(double width) {
   return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, signUpState) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, userState) {
-        return ElevatedButton(
+        return signUpState.signupStatus == 'Loading'||signUpState.signupStatus =='Success'? const SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  color: accentColor,
+                ),
+              ) : ElevatedButton(
           style: ButtonStyle(
               elevation: const MaterialStatePropertyAll(0),
               fixedSize: MaterialStatePropertyAll(
@@ -74,13 +79,6 @@ Widget _finishSetUpButton(double width) {
 
             if (signUpState.isNameValid) {
               context.read<SignUpBloc>().add(FinishSignUp());
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (BuildContext context) {
-                  return (ScreenMainPage());
-                }),
-              );
-              Future.delayed(const Duration(seconds: 20));
             }
           },
           child: const Text(

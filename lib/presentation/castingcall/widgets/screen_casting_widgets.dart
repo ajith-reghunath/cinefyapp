@@ -474,100 +474,109 @@ Widget applyButton(double width, double height, int index) {
         builder: (context, userState) {
           return TextButton(
             onPressed: () {
-              userState.isApplied == false
-                  ? showModalBottomSheet(
-                      context: context,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(
-                            20.0), // Adjust the top radius as needed
-                      )),
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                            // height: 0.3 * height,
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            sizedBox1(),
-                            const Text(
-                              'Would you like to submit your\n   profile for this casting call ?',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            sizedBox1(),
-                            Container(
-                              color: shade5,
-                              width: width,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {
-                                          context.read<CastingCallBloc>().add(
-                                              ApplyCastingCall(
-                                                  postID: castingState
-                                                      .castingCallList![index]
-                                                      .sId!));
-                                          context
-                                              .read<CastingCallBloc>()
-                                              .add(LoadCastingCall());
-                                          Navigator.pop(context);
-                                          showSnackBar(context,
-                                              'Your profile is submitted');
-                                          castingState.appliedCastingCallList
-                                              .add(castingState
-                                                  .castingCallList![index]);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                            color: accentColor,
-                                          ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8, horizontal: 20),
-                                            child: Text(
-                                              'Submit',
-                                              style: TextStyle(
-                                                  fontSize: fontSize2,
-                                                  color: primaryColor),
-                                            ),
-                                          ),
-                                        )),
-                                    const SizedBox(width: 40),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
-                                              color: primaryColor,
-                                              border: Border.all(
-                                                  width: 1, color: shade3)),
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8, horizontal: 20),
-                                            child: Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                  fontSize: fontSize2,
-                                                  color: shade2),
-                                            ),
-                                          ),
-                                        )),
-                                  ],
+              userState.age != null
+                  ? userState.isApplied == false
+                      ? showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(
+                                20.0), // Adjust the top radius as needed
+                          )),
+                          builder: (BuildContext context) {
+                            return SizedBox(
+                                // height: 0.3 * height,
+                                child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                sizedBox1(),
+                                const Text(
+                                  'Would you like to submit your\n   profile for this casting call ?',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                              ),
-                            )
-                          ],
-                        ));
-                      })
-                  : showSnackBar(context, 'You already submitted the profile');
+                                sizedBox1(),
+                                Container(
+                                  color: shade5,
+                                  width: width,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<CastingCallBloc>()
+                                                  .add(ApplyCastingCall(
+                                                      postID: castingState
+                                                          .castingCallList![
+                                                              index]
+                                                          .sId!));
+                                              context
+                                                  .read<CastingCallBloc>()
+                                                  .add(LoadCastingCall());
+                                              Navigator.pop(context);
+                                              showSnackBar(context,
+                                                  'Your profile is submitted');
+                                              castingState
+                                                  .appliedCastingCallList
+                                                  .add(castingState
+                                                      .castingCallList![index]);
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: accentColor,
+                                              ),
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 20),
+                                                child: Text(
+                                                  'Submit',
+                                                  style: TextStyle(
+                                                      fontSize: fontSize2,
+                                                      color: primaryColor),
+                                                ),
+                                              ),
+                                            )),
+                                        const SizedBox(width: 40),
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                  color: primaryColor,
+                                                  border: Border.all(
+                                                      width: 1, color: shade3)),
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 20),
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      fontSize: fontSize2,
+                                                      color: shade2),
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ));
+                          })
+                      : showSnackBar(
+                          context, 'You already submitted the profile')
+                  : showSnackBar(context, 'Please complete your profile');
             },
             child: Container(
               decoration: BoxDecoration(

@@ -66,12 +66,11 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
         String userID = userdetails[0].id!;
         if (state.castingCallList != null) {
           List<ccm.CastingCallModel>? castingCallList = state.castingCallList;
-          int k = 0;
+      
           for (int i = 0; i < castingCallList!.length; i++) {
             if (castingCallList[i].applicants!.isNotEmpty) {
               for (int j = 0; j < castingCallList[i].applicants!.length; j++) {
                 if (castingCallList[i].applicants![j].user == userID) {
-                  k++;
                   state.appliedCastingCallList.add(castingCallList[i]);
                   castingCallList[i].castingCallStatus =
                       castingCallList[i].applicants![j].status;
@@ -91,8 +90,6 @@ class CastingCallBloc extends Bloc<CastingCallEvent, CastingCallState> {
               bookmarkedApplicants: state.bookmarkedApplicants,
               reviewedApplicants: state.reviewedApplicants,
               createdCastingCallList: state.createdCastingCallList));
-          print(k);
-          print(state.appliedCastingCallList.length);
         }
       }
     });

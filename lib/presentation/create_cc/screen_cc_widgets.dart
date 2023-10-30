@@ -27,12 +27,11 @@ Widget castingCallPicture(double width) {
                 children: [
                   const Text('Thumbnail',
                       style: TextStyle(fontSize: fontSize2, color: shade3)),
-                  castingCallPictureWidget(width),
-                  // artistState.pickFile == null
-                  //     ? imageContainer(
-                  //         width, const AssetImage('assets/images/profileicon.png'))
-                  //     : imageContainer(
-                  //         width, FileImage(File(artistState.pickFile!.path!))),
+                  GestureDetector(onTap: () {
+                    context.read<CreateCcBloc>()
+                              .add(ChangePosterButtonClicked());
+                  },child: castingCallPictureWidget(width)),
+                  
 
                   SizedBox(
                     width: width,
@@ -66,7 +65,7 @@ Widget castingCallPictureWidget(double width) {
     builder: (context, castingCallState) {
       if (castingCallState.pickFile == null) {
         return castingCallmageContainer(
-            width, const AssetImage('assets/images/profileicon.png'));
+            width, const AssetImage('assets/images/upload.png'));
       } else {
         return castingCallmageContainer(
           width,

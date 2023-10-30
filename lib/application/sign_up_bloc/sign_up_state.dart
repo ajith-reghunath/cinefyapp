@@ -10,6 +10,7 @@ class SignUpState {
   String otpStatus;
   Response? signUpResponse;
   Response? otpResponse;
+  String signupStatus;
 
   bool isEmailValid() {
     String emailRegX = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -35,7 +36,8 @@ class SignUpState {
       this.otpEntered = '',
       this.signUpResponse,
       this.otpResponse,
-      this.otpStatus='Initial'});
+      this.otpStatus = 'Initial',
+      this.signupStatus='Initial'});
 
   SignUpState copyWith({
     String? email,

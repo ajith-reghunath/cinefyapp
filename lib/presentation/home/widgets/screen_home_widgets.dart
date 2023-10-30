@@ -4,9 +4,11 @@ import 'package:cinefy/application/casting_call_bloc/casting_call_bloc.dart';
 import 'package:cinefy/application/chat_bloc/chat_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_bloc.dart';
 import 'package:cinefy/application/login_bloc/login_state.dart';
+import 'package:cinefy/presentation/side_menu/about_us_screen.dart';
+import 'package:cinefy/presentation/side_menu/privacy_screen.dart';
+import 'package:cinefy/presentation/side_menu/t&c_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_socket_client/web_socket_client.dart';
 import '../../../application/login_bloc/login_event.dart';
 import '../../../core/colors.dart';
 import '../../../core/fontSize.dart';
@@ -151,7 +153,7 @@ Widget recentCastingCall() {
   );
 }
 
-Future<dynamic> options(BuildContext context1, WebSocket socket) {
+Future<dynamic> options(BuildContext context1) {
   double height = MediaQuery.of(context1).size.height;
   double width = MediaQuery.of(context1).size.width;
   return showModalBottomSheet(
@@ -214,8 +216,10 @@ Future<dynamic> options(BuildContext context1, WebSocket socket) {
                             ),
                             TextButton(
                               onPressed: () {
-                                TimeDisplay()
-                                    .displayDate('2023-10-11T10:14:20.082Z');
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return TermsAndConditionsScreen();
+                                }));
                               },
                               child: const Text(
                                 'Terms and Conditions',
@@ -225,7 +229,10 @@ Future<dynamic> options(BuildContext context1, WebSocket socket) {
                             ),
                             TextButton(
                               onPressed: () {
-                                print(DateTime.now().toString());
+                               Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return AboutUsScreen();
+                                }));
                               },
                               child: const Text(
                                 'About Us',
@@ -235,8 +242,10 @@ Future<dynamic> options(BuildContext context1, WebSocket socket) {
                             ),
                             TextButton(
                               onPressed: () {
-                                // context.read<UserBloc>().add(LoadUser(
-                                //     response: signUpState.signUpResponse));
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return PrivacyScreen();
+                                }));
                               },
                               child: const Text(
                                 'Privacy Policy',

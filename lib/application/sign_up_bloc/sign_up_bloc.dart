@@ -177,6 +177,17 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     // });
 
     on<FinishSignUp>((event, emit) async {
+      emit(SignUpState(
+          email: state.email,
+          password: state.password,
+          name: state.name,
+          phone: state.phone,
+          type: state.type,
+          otpEntered: state.otpEntered,
+          otpStatus: state.otpStatus,
+          otpResponse: state.otpResponse,
+          signUpResponse: state.signUpResponse,
+          signupStatus: 'Loading'));
       UserSignUp signUpUser = UserSignUp(
           email: state.email,
           password: state.password,
@@ -185,10 +196,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           type: state.type);
       Response? response = await ApiCalls().userSignUp(signUpUser);
       if (response != null) {
-        emit(SignUpState(signUpResponse: response));
+        emit(SignUpState(signUpResponse: response,signupStatus: 'Success',type: state.type));
         print('state emitted');
         print("after emitting ${state.signUpResponse!.body}");
         controller.add(response);
+      } else {
+        emit(SignUpState(signupStatus: 'Failed'));
       }
     });
   }

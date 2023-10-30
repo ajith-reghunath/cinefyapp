@@ -28,10 +28,10 @@ class UserState {
   List<int> recommended = [];
   List<dynamic>? bookmark;
   List<CastingCallModel>? appliedCastingCallList;
+  String userStatus;
 
   UserState(
-      {
-      this.message,
+      {this.message,
       this.token,
       this.sId,
       this.name,
@@ -55,7 +55,8 @@ class UserState {
       this.photo,
       this.user,
       this.bookmark,
-      this.appliedCastingCallList});
+      this.appliedCastingCallList,
+      this.userStatus='initial'});
 }
 
 class UserInitial extends UserState {}

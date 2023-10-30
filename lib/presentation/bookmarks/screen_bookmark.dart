@@ -1,7 +1,7 @@
 import 'package:cinefy/application/bookmark_bloc/bookmark_bloc_bloc.dart';
+import 'package:cinefy/core/fontSize.dart';
 import 'package:cinefy/presentation/castingcall/screen_casting_call.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/colors.dart';
 import '../../domain/time_ago/time_display.dart';
@@ -10,8 +10,9 @@ import '../common widgets/common_widgets.dart';
 
 // ignore: must_be_immutable
 class ScreenBookmark extends StatelessWidget {
-  ScreenBookmark({super.key});
+  const ScreenBookmark({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocBuilder<BookmarkBlocBloc, BookmarkBlocState>(
@@ -40,7 +41,20 @@ class ScreenBookmark extends StatelessWidget {
                     ),
                   ),
                   child: Expanded(
-                    child: state.bookmarkedList.isEmpty ? const Center(child: Text('No bookmarks to show')) : ListView.builder(
+                    child: state.bookmarkedList.isEmpty ? Center(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/empty.png',
+                              width: 0.7 * width,
+                            ),
+                            const Text(
+                              'Hmmm... No bookmarks! \n ',
+                              style: TextStyle(fontSize: fontSize4),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),) : ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {

@@ -67,15 +67,6 @@ class ScreenProfile extends StatelessWidget {
                                         children: [
                                           screenTitle('Artist Profile'),
                                           saveButton(),
-                                          // TextButton(
-                                          //     onPressed: () {
-                                          //       context
-                                          //           .read<UserBloc>()
-                                          //           .add(LoadUserMethod2());
-                                          //       print(
-                                          //           userState.photo.toString());
-                                          //     },
-                                          //     child: Text('test')),
                                         ],
                                       ),
                                     ),

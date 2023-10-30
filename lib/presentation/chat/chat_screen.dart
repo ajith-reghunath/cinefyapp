@@ -16,7 +16,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int call = 1;
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
         return BlocBuilder<UserBloc, UserState>(
@@ -38,7 +38,7 @@ class ChatScreen extends StatelessWidget {
                     sizedBox1(),
                     state.chatList == null
                         ? SizedBox(
-                            height: 0.8 * height,
+                            height: 0.7 * height,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: accentColor,
@@ -47,22 +47,29 @@ class ChatScreen extends StatelessWidget {
                           )
                         : state.chatList!.isEmpty
                             ? SizedBox(
-                                height: height,
-                                child: Center(
-                                    child: TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder:
-                                                (BuildContext context) {
-                                              return (IndividualChatScreen(
-                                                receiverID: 'ddddssd',
-                                                receiverName: 'User',
-                                              ));
-                                            }),
-                                          );
-                                        },
-                                        child: const Text('press me'))),
+                                height: 0.7 * height,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/chat.png',
+                                      width: 0.7 * width,
+                                    ),
+                                    userState.type == 'recruiter'
+                                        ? const Text(
+                                            'Chat will be activated\nonce you complete the selection\nprocess of your casting call.',
+                                            style:
+                                                TextStyle(fontSize: fontSize4),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : const Text(
+                                            'Chat will be activated\nwhen a casting director wants to\nchat with you. So please wait !',
+                                            style:
+                                                TextStyle(fontSize: fontSize4),
+                                            textAlign: TextAlign.center,
+                                          )
+                                  ],
+                                ),
                               )
                             : Expanded(
                                 child: ListView.builder(

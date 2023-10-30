@@ -15,26 +15,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
     on<LoginEmailChanged>((event, emit) async {
       emit(state.copyWith(email: event.email));
-      // LoginModel firstUser =
-      //     LoginModel(email: event.email!, password: state.password);
-      // Response response = await getToken(firstUser);
-      // print('kkkkkkkk ${response.statusCode}');
-      // (response.statusCode == 200)
-      //     ? emit(state.copyWith(formStatus: 'Success'))
-      //     : emit(state.copyWith(formStatus: 'Failed'));
     });
 
     on<LoginPasswordChanged>((event, emit) async {
       emit(state.copyWith(password: event.password));
-      // LoginModel firstUser =
-      //     LoginModel(email: state.email, password: event.password!);
-      // Response? response = await ApiCalls().userLogin(firstUser);
-      // if (response != null) {
-      //   print('kkkkkkkk ${response.statusCode}');
-      //   emit(state.copyWith(formStatus: 'Success', response: response));
-      // } else {
-      //   emit(state.copyWith(formStatus: 'Failed'));
-      // }
     });
 
     on<LoginSubmitted>((event, emit) async {
