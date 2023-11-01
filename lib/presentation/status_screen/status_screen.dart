@@ -98,7 +98,7 @@ class StatusScreen extends StatelessWidget {
                         return ScreenCastingDirectorMainPage();
                       }));
                     },
-                    child: Text('Go to home'))
+                    child: const Text('Go to home'))
               ],
             );
           }

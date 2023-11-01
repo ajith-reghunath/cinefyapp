@@ -227,7 +227,7 @@ Widget _verifyOtpButton(double width) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (BuildContext context) {
-              return (EnterNameScreen());
+              return (const EnterNameScreen());
             }),
           );
         } else {

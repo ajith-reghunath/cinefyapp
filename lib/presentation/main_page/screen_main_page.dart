@@ -17,9 +17,9 @@ class ScreenMainPage extends StatelessWidget {
   int call = 1;
   final _pages = [
     ScreenHome(),
-    ScreenBookmark(),
-    ScreenApplied(),
-    ChatScreen(),
+    const ScreenBookmark(),
+    const ScreenApplied(),
+    const ChatScreen(),
     ScreenProfile()
   ];
 

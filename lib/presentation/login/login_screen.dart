@@ -14,7 +14,7 @@ import '../main_page/cd_mainpage.dart';
 import '../main_page/screen_main_page.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

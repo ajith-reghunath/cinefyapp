@@ -118,7 +118,7 @@ Widget chooseYourRoleContinueButton(double width) {
         state.type.isNotEmpty
             ? Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (BuildContext context) {
-                return EnterMobileNumberScreen();
+                return const EnterMobileNumberScreen();
               }))
             : showSnackBar(context, 'Please select one option');
       },

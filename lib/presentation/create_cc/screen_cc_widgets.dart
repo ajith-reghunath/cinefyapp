@@ -444,7 +444,7 @@ class _AgeSliderWidgetState extends State<AgeSliderWidget> {
                       ),
                     ),
                   ),
-                  Text('  -  '),
+                  const Text('  -  '),
                   Container(
                     width: 40,
                     height: 30,

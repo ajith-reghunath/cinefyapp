@@ -139,7 +139,7 @@ Widget recommended(double width, List<int> recommended) {
 
 Widget recentCastingCall() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 15),
+    padding: const EdgeInsets.symmetric(horizontal: 15),
     child: Column(
       children: [
         sizedBoxH15(),
@@ -197,7 +197,7 @@ Future<dynamic> options(BuildContext context1) {
                                   context1,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) {
-                                    return (LoginScreen());
+                                    return (const LoginScreen());
                                   }),
                                 );
                                 await clearUserData();
@@ -218,7 +218,7 @@ Future<dynamic> options(BuildContext context1) {
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return TermsAndConditionsScreen();
+                                  return const TermsAndConditionsScreen();
                                 }));
                               },
                               child: const Text(
@@ -231,7 +231,7 @@ Future<dynamic> options(BuildContext context1) {
                               onPressed: () {
                                Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return AboutUsScreen();
+                                  return const AboutUsScreen();
                                 }));
                               },
                               child: const Text(
@@ -244,7 +244,7 @@ Future<dynamic> options(BuildContext context1) {
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                  return PrivacyScreen();
+                                  return const PrivacyScreen();
                                 }));
                               },
                               child: const Text(

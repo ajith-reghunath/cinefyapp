@@ -90,7 +90,7 @@ Widget section3(List<String> roles, String title, double width, String postID) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
+                  SizedBox(
                     width: width * 0.75,
                     child: Text(
                       joinedString,
@@ -218,7 +218,7 @@ Widget section3ForRecommended(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
+                  SizedBox(
                     width: width * 0.75,
                     child: Text(
                       joinedString,
@@ -232,7 +232,7 @@ Widget section3ForRecommended(
                   ),
                   Text(
                     title,
-                    style: TextStyle(fontSize: fontSize3, color: shade2),
+                    style: const TextStyle(fontSize: fontSize3, color: shade2),
                   ),
                 ],
               ),
@@ -376,7 +376,7 @@ Widget section3New(List<String> roles, String title, double width) {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
+          SizedBox(
             width: width * 0.75,
             child: Text(
               joinedString,

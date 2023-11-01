@@ -10,7 +10,7 @@ import '../common widgets/common_widgets.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
-  ChatScreen({super.key});
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
